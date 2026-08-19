@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riverpe — Payment Supply Network Framework v2</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e4e4e7;
+    --muted: #9ca3af;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e1b4b 100%);
+    padding: 60px 40px 50px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .subtitle { color: var(--muted); font-size: 1.05rem; max-width: 650px; margin: 0 auto; }
+  .hero .meta { margin-top: 18px; font-size: 0.82rem; color: #6b7280; }
+  .container { max-width: 920px; margin: 0 auto; padding: 40px 32px 80px; }
+  h2 { font-size: 1.5rem; font-weight: 700; margin-top: 48px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); color: #f8fafc; }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 28px; margin-bottom: 10px; color: #e2e8f0; }
+  h4 { font-size: 1rem; font-weight: 600; margin-top: 20px; margin-bottom: 8px; color: #cbd5e1; }
+  p, li { color: var(--text); margin-bottom: 10px; }
+  ul, ol { padding-left: 22px; margin-bottom: 14px; }
+  li { margin-bottom: 6px; }
+  strong { color: #f1f5f9; }
+  code { background: #27293a; padding: 2px 7px; border-radius: 4px; font-size: 0.88rem; color: #93c5fd; }
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 14px 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  pre code { background: none; padding: 0; color: #c4b5fd; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9rem; }
+  th, td { padding: 10px 14px; text-align: left; border: 1px solid var(--border); }
+  th { background: var(--surface); font-weight: 600; color: #e2e8f0; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { color: var(--text); }
+  tr:hover td { background: rgba(59,130,246,0.04); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .callout {
+    background: rgba(59,130,246,0.08);
+    border-left: 3px solid var(--accent);
+    padding: 14px 20px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 16px 0;
+  }
+  .callout-warn {
+    background: rgba(245,158,11,0.08);
+    border-left: 3px solid var(--amber);
+  }
+  .callout-green {
+    background: rgba(34,197,94,0.08);
+    border-left: 3px solid var(--green);
+  }
+  .callout-purple {
+    background: rgba(139,92,246,0.08);
+    border-left: 3px solid var(--accent2);
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .badge-green { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .badge-amber { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .toc h3 { margin-top: 0; }
+  .toc a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .toc a:hover { text-decoration: underline; }
+  .exec-summary {
+    background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin: 20px 0;
+  }
+  .exec-summary h2 { border-bottom-color: rgba(99,102,241,0.3); margin-top: 0; }
+  .priority-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .market-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .market-row:last-child { border-bottom: none; }
+  .market-info { flex: 1; }
+  .market-info strong { font-size: 1.05rem; }
+  .market-info .score { font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-left: 8px; }
+  .phase-timeline { display: grid; gap: 12px; margin: 16px 0; }
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .phase-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-weight: 700; }
+  .phase-days { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .phase-content strong { display: block; margin-bottom: 4px; }
+  .vs-table { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .vs-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
+  .vs-card h4 { margin-top: 0; }
+  .flywheel { text-align: center; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin: 16px 0; font-size: 0.95rem; }
+  @media (max-width: 640px) {
+    .hero { padding: 40px 20px 36px; }
+    .hero h1 { font-size: 1.6rem; }
+    .container { padding: 24px 16px 60px; }
+    h2 { font-size: 1.2rem; }
+    .phase { grid-template-columns: 1fr; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 7px 8px; }
+    .vs-table { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Riverpe Payment Supply Network Framework v2</h1>
+  <p class="subtitle">Merged & Enhanced — A practical playbook for building, launching, and managing payment corridors across emerging markets</p>
+  <p class="meta">Prepared for Riverpe Founding Team · Head of Growth Operations / Partnerships / Market Expansion · August 2026</p>
+</div>
+
+<div class="container">
+
+<div class="callout-purple callout">
+  <strong>Core thesis:</strong> The goal is not to collect PSP integrations. The goal is to build reliable payment corridors where customers can move money successfully, compliantly, and profitably.
+</div>
+
+<div class="toc">
+  <h3>Framework Contents</h3>
+  <ol>
+    <li><a href="#s1">Market & Corridor Prioritization</a></li>
+    <li><a href="#s2">Regulatory & Risk Assessment</a></li>
+    <li><a href="#s3">Mapping the Payment Ecosystem</a></li>
+    <li><a href="#s4">PSP Partner Selection Framework</a></li>
+    <li><a href="#s5">Corridor Launch Strategy (90-Day Plan)</a></li>
+    <li><a href="#s6">Payment Supply Network Management</a></li>
+    <li><a href="#s7">Growth & Partnership Operating Model</a></li>
+    <li><a href="#s8">Final Perspective & Executive Summary</a></li>
+  </ol>
+</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2 id="s1">1. Market & Corridor Prioritization</h2>
+
+<h3>Corridor-First Thinking</h3>
+<p>Think in <strong>corridors</strong>, not just markets. A corridor = origin market → destination market + payment method + use case.</p>
+
+<div class="card">
+  <h4>Examples</h4>
+  <ul>
+    <li>Brazil → US (crypto off-ramp, iGaming payout)</li>
+    <li>Ivory Coast → France (remittance, ecommerce)</li>
+    <li>DRC → South Africa (B2B trade, payroll)</li>
+    <li>Brazil → Argentina (cross-border ecommerce)</li>
+  </ul>
+</div>
+
+<h3>Market Scoring Framework</h3>
+<table>
+  <thead>
+    <tr><th>Factor</th><th>Weight</th><th>Key Questions</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Demand</strong></td><td>25%</td><td>Are customers actively needing local payment rails?</td></tr>
+    <tr><td><strong>Payment Volume</strong></td><td>20%</td><td>Is there enough transaction activity to justify entry?</td></tr>
+    <tr><td><strong>Cross-Border Need</strong></td><td>15%</td><td>Is there significant money flow in/out of this market?</td></tr>
+    <tr><td><strong>Regulatory Clarity</strong></td><td>15%</td><td>Can Riverpe operate safely? What's the licensing path?</td></tr>
+    <tr><td><strong>PSP Availability</strong></td><td>10%</td><td>Are quality payment partners available?</td></tr>
+    <tr><td><strong>Competition</strong></td><td>5%</td><td>Is the market underserved? Can Riverpe differentiate?</td></tr>
+    <tr><td><strong>Revenue Potential</strong></td><td>10%</td><td>Take rate × volume. What's the unit economics upside?</td></tr>
+  </tbody>
+</table>
+
+<h3>Initial Market Prioritization</h3>
+
+<div class="market-row">
+  <span class="priority-number">1</span>
+  <div class="market-info"><strong>Ivory Coast</strong> <span class="score">4.2</span><br>Strong West African hub. Mature mobile money (Orange, MTN, Wave). CFA franc peg = stability. Gateway to Francophone Africa → expand to Senegal, Cameroon, Burkina Faso.</div>
+</div>
+<div class="market-row">
+  <span class="priority-number">2</span>
+  <div class="market-info"><strong>Brazil</strong> <span class="score">3.8</span><br>Largest market. PIX dominates (60%+ digital payments). Massive crypto market. High regulatory bar — win through specialized corridors and underserved verticals.</div>
+</div>
+<div class="market-row">
+  <span class="priority-number">3</span>
+  <div class="market-info"><strong>Congo (DRC)</strong> <span class="score">2.8</span><br>~100M population. Massive untapped potential. Low competition. Enter after proving Africa model. High difficulty — liquidity, banking, regulatory ambiguity.</div>
+</div>
+<div class="market-row">
+  <span class="priority-number">4</span>
+  <div class="market-info"><strong>Botswana</strong> <span class="score">1.9</span><br>Stable regulatory environment. Small market (~2.6M). Niche corridors only.</div>
+</div>
+<div class="market-row">
+  <span class="priority-number">5</span>
+  <div class="market-info"><strong>Malawi</strong> <span class="score">1.8</span><br>Emerging digital payments. Volatile Kwacha. Thin liquidity. On-demand only.</div>
+</div>
+
+<div class="callout callout-green">
+  <strong>Sequencing note:</strong> Ivory Coast first (prove Africa model) vs. Brazil first (highest volume, fastest revenue) — both are defensible. Choose based on existing customer base and investor thesis.
+</div>
+
+<h3>Corridor Demand Heat Map</h3>
+<div class="card">
+  <h4>🌉 Ivory Coast Corridors</h4>
+  <ul>
+    <li>IC → France (remittance, diaspora) <strong>HIGH DEMAND</strong></li>
+    <li>IC → US (crypto, B2B) <strong>MEDIUM DEMAND</strong></li>
+    <li>IC → Senegal (WAEMU trade) <strong>HIGH DEMAND</strong></li>
+    <li>IC → China (import/export) <strong>MEDIUM DEMAND</strong></li>
+  </ul>
+  <h4>🌉 Brazil Corridors</h4>
+  <ul>
+    <li>Brazil → US (crypto, iGaming, B2B) <strong>HIGH DEMAND</strong></li>
+    <li>Brazil → Argentina (ecommerce) <strong>MEDIUM DEMAND</strong></li>
+    <li>Brazil → Portugal/EU (remittance, trade) <strong>HIGH DEMAND</strong></li>
+    <li>Brazil → China (import payments) <strong>HIGH DEMAND</strong></li>
+  </ul>
+  <h4>🌉 DRC Corridors</h4>
+  <ul>
+    <li>DRC → South Africa (trade, payroll) <strong>HIGH DEMAND</strong></li>
+    <li>DRC → UAE (mining, trade) <strong>MEDIUM DEMAND</strong></li>
+    <li>DRC → China (import/export) <strong>HIGH DEMAND</strong></li>
+  </ul>
+</div>
+
+<hr>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2 id="s2">2. Regulatory & Risk Assessment</h2>
+
+<div class="callout callout-warn">
+  <strong>Principle:</strong> Payment infrastructure is built on trust. Regulatory assessment is a go/no-go gate, not a checkbox exercise.
+</div>
+
+<h3>Payment License Requirements</h3>
+<table>
+  <thead><tr><th>Market</th><th>License Required</th><th>Authority</th><th>Complexity</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Brazil</td><td>Payment Institution License or partnership</td><td>BACEN</td><td><span class="badge badge-amber">High</span></td><td>Partner (0 time) or direct (6–12 mo)</td></tr>
+    <tr><td>Ivory Coast</td><td>PSP license or licensed partner</td><td>BCEAO</td><td><span class="badge badge-blue">Medium</span></td><td>Partner (0 time) or direct (3–6 mo)</td></tr>
+    <tr><td>Congo (DRC)</td><td>Unclear — framework underdeveloped</td><td>BCC</td><td><span class="badge badge-amber">High</span></td><td>Partner only (regulatory risk)</td></tr>
+    <tr><td>Botswana</td><td>PSP license</td><td>Bank of Botswana</td><td><span class="badge badge-blue">Medium</span></td><td>Partner or direct (3–6 mo)</td></tr>
+    <tr><td>Malawi</td><td>PSP license</td><td>Reserve Bank of Malawi</td><td><span class="badge badge-blue">Medium</span></td><td>Partner or direct (3–6 mo)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-green">
+  <strong>Recommendation:</strong> First 90 days — operate through licensed local PSP partners. Riverpe = technology/aggregation layer. Direct licensing = Year 2 for high-volume markets.
+</div>
+
+<h3>High-Risk Industry Screening Questions</h3>
+<div class="card">
+  <p>For crypto, iGaming, and forex PSP selection:</p>
+  <ol>
+    <li>Does the PSP <strong>explicitly accept</strong> these industries?</li>
+    <li>Do their <strong>banking partners</strong> allow these transactions?</li>
+    <li>What <strong>risk controls</strong> exist for high-risk flows?</li>
+    <li>Have they experienced <strong>account freezes</strong> or compliance actions?</li>
+    <li>What <strong>transaction limits</strong> apply to high-risk merchants?</li>
+    <li>What's their <strong>dispute/chargeback</strong> handling capability?</li>
+  </ol>
+</div>
+
+<div class="callout callout-warn">
+  <strong>Critical:</strong> Never hide the crypto use case from PSP partners. Hidden crypto flows surfacing during a regulatory audit will destroy the partnership.
+</div>
+
+<h3>How Regulation Affects Partner Selection</h3>
+<ul>
+  <li>Without proper licensing → <strong>automatically disqualified</strong></li>
+  <li>History of regulatory sanctions → <strong>high-risk</strong>, low-volume pilot only</li>
+  <li>Compliance infrastructure → determines <strong>scaling ceiling</strong></li>
+  <li>Risk appetite → determines <strong>which use cases</strong> they support</li>
+  <li>Banking relationship stability → determines <strong>operational continuity</strong></li>
+</ul>
+
+<hr>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2 id="s3">3. Mapping the Payment Ecosystem</h2>
+
+<h3>The Layer Model</h3>
+<div class="card">
+  <h4>Layer 1: Banks</h4>
+  <p>Settlement banks, commercial banks, fintech-friendly banks, FX providers</p>
+  <h4>Layer 2: Mobile Money & Wallets</h4>
+  <p>Mobile operators (M-Pesa, Airtel, MTN, Orange, Wave), digital wallets, alternative payment methods</p>
+  <h4>Layer 3: PSPs & Aggregators</h4>
+  <p>Payment gateways, local processors, acquirers, API providers</p>
+</div>
+
+<h3>Market-Specific Ecosystems</h3>
+
+<div class="card">
+  <h4>🇨🇮 Ivory Coast</h4>
+  <ul>
+    <li><strong>Mobile money:</strong> Orange Money (~45%), MTN MoMo (~30%), Wave (~20%), Free Money (~5%)</li>
+    <li><strong>Banks:</strong> SGBCI, BICICI, Ecobank, NSIA Banke, Coris Bank</li>
+    <li><strong>PSPs:</strong> Flutterwave, FedaPay, CinetPay, ReliaMoney</li>
+    <li>Card penetration ~5% — mobile money dominates. CFA franc zone simplifies WAEMU payments.</li>
+  </ul>
+  <h4>🇧🇷 Brazil</h4>
+  <ul>
+    <li><strong>PIX:</strong> 60%+ of all digital payments — instantaneous, 24/7, zero consumer cost</li>
+    <li><strong>Boleto Bancário:</strong> ~20% of e-commerce (cash-based, 3-day settlement)</li>
+    <li><strong>PSPs:</strong> PagSeguro, Mercado Pago, StoneCo, EBANX, dLocal, Cielo, Rede</li>
+    <li>Open Banking rolling out under BACEN. NuBank, Inter, C6 Bank reshaping banking.</li>
+  </ul>
+  <h4>🇨🇩 Congo (DRC)</h4>
+  <ul>
+    <li><strong>Cash:</strong> ~90% of all transactions</li>
+    <li><strong>Mobile money:</strong> Airtel Money (largest), Orange Money, M-Pesa (limited)</li>
+    <li><strong>Banks:</strong> Rawbank, Equity BCDC, TMB, FBNBank</li>
+    <li>Very limited PSP infrastructure — this is where Riverpe creates value. Dual-currency (USD + CDF).</li>
+  </ul>
+</div>
+
+<h3>Partner Discovery Process</h3>
+<ol>
+  <li><strong>Industry Databases:</strong> The Paypers, CB Insights, Fintech Maps, MRC member lists</li>
+  <li><strong>Fintech Associations:</strong> Africa FinTech Network, ABFintech, PASA</li>
+  <li><strong>Regulatory Directories:</strong> Central Bank licensed entity registers</li>
+  <li><strong>Competitor Analysis:</strong> Map who Flutterwave, Paystack, dLocal, Chipper Cash use — if they process real volume through a PSP, that PSP is proven</li>
+  <li><strong>Local Consultants:</strong> $500–2,000 for structured market mapping per market</li>
+  <li><strong>Conferences:</strong> Africa Fintech Summit, Money20/20, Seamless Africa, DEVCON</li>
+</ol>
+
+<hr>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2 id="s4">4. PSP Partner Selection Framework</h2>
+
+<h3>The Discovery Funnel</h3>
+<div class="card">
+  <p><strong>100+</strong> identified → <strong>20–30</strong> screened → <strong>15–20</strong> calls → <strong>8–12</strong> evaluated → <strong>4–6</strong> negotiating → <strong>2–3</strong> signed per market</p>
+</div>
+
+<h3>PSP Scorecard (100 Points)</h3>
+
+<h4>Business Strength <span class="badge badge-blue">20 pts</span></h4>
+<table>
+  <thead><tr><th>Criterion</th><th>1 pt</th><th>3 pts</th><th>5 pts</th></tr></thead>
+  <tbody>
+    <tr><td>Market Coverage</td><td>Single city</td><td>Multiple cities, one country</td><td>Nationwide + regional</td></tr>
+    <tr><td>Existing Clients</td><td>Unknown/few</td><td>50+ active</td><td>500+ with recognizable brands</td></tr>
+    <tr><td>Transaction Volume</td><td>&lt;$100K/mo</td><td>$1M–10M/mo</td><td>$10M+/mo</td></tr>
+    <tr><td>Reputation</td><td>Complaints</td><td>Neutral</td><td>Strong references</td></tr>
+  </tbody>
+</table>
+
+<h4>Technical Capability <span class="badge badge-blue">20 pts</span></h4>
+<table>
+  <thead><tr><th>Criterion</th><th>1 pt</th><th>3 pts</th><th>5 pts</th></tr></thead>
+  <tbody>
+    <tr><td>API Quality</td><td>No API</td><td>REST API, basic docs</td><td>Versioned API with SDKs</td></tr>
+    <tr><td>Integration Speed</td><td>3+ months</td><td>2–4 weeks</td><td>&lt;1 week sandbox→prod</td></tr>
+    <tr><td>Reliability</td><td>Frequent downtime</td><td>95%+ uptime</td><td>99.5%+ with SLA</td></tr>
+    <tr><td>Settlement Infra</td><td>Manual, wire only</td><td>Automated, T+3+</td><td>Real-time or T+1</td></tr>
+  </tbody>
+</table>
+
+<h4>Payment Performance <span class="badge badge-blue">25 pts</span></h4>
+<table>
+  <thead><tr><th>Criterion</th><th>1 pt</th><th>3 pts</th><th>5 pts</th></tr></thead>
+  <tbody>
+    <tr><td>Payment Methods</td><td>1 method</td><td>2–3 methods</td><td>Full stack</td></tr>
+    <tr><td>Success Rate</td><td>&lt;85%</td><td>90–95%</td><td>97%+</td></tr>
+    <tr><td>Transaction Limits</td><td>&lt;$100/tx</td><td>$100–$5,000</td><td>$5,000+</td></tr>
+    <tr><td>Liquidity</td><td>Low, inconsistent</td><td>Moderate</td><td>Deep, always available</td></tr>
+    <tr><td>Settlement Speed</td><td>T+7+</td><td>T+3</td><td>T+0 or T+1</td></tr>
+  </tbody>
+</table>
+
+<h4>Risk & Compliance <span class="badge badge-blue">20 pts</span></h4>
+<table>
+  <thead><tr><th>Criterion</th><th>1 pt</th><th>3 pts</th><th>5 pts</th></tr></thead>
+  <tbody>
+    <tr><td>Compliance Maturity</td><td>No program</td><td>Basic KYC/AML</td><td>Dedicated team, automated</td></tr>
+    <tr><td>AML Controls</td><td>Manual</td><td>Some automated</td><td>Full monitoring + SAR</td></tr>
+    <tr><td>Licensing</td><td>Unlicensed</td><td>Licensed, no issues</td><td>Licensed + audit history</td></tr>
+    <tr><td>Risk Appetite</td><td>Very restrictive</td><td>Selective</td><td>Broad with due diligence</td></tr>
+  </tbody>
+</table>
+
+<h4>Commercial Terms <span class="badge badge-blue">15 pts</span></h4>
+<table>
+  <thead><tr><th>Criterion</th><th>1 pt</th><th>3 pts</th><th>5 pts</th></tr></thead>
+  <tbody>
+    <tr><td>Pricing</td><td>Above market</td><td>At market</td><td>Below market / volume discounts</td></tr>
+    <tr><td>Revenue Share</td><td>No flexibility</td><td>Standard</td><td>Flexible, performance-based</td></tr>
+    <tr><td>Min. Commitments</td><td>High</td><td>Moderate</td><td>No/low minimums</td></tr>
+    <tr><td>Scalability</td><td>Cannot grow</td><td>Moderate</td><td>Built for high-volume</td></tr>
+  </tbody>
+</table>
+
+<h3>Corridor PSP Structure</h3>
+<div class="card">
+  <p><strong>Primary PSP</strong> — Best performance, main volume (70–80% of traffic)</p>
+  <p><strong>Backup PSP</strong> — Failover, risk reduction (15–25% of traffic, scales up if primary degrades)</p>
+  <p><strong>Future PSP</strong> — Pricing negotiation leverage, integrated but low volume, ready to activate</p>
+</div>
+
+<h3>Industry-Specific PSP Identification</h3>
+<div class="card">
+  <h4>🏦 Crypto</h4>
+  <ul>
+    <li>Filter by explicit crypto-friendly policy — ask directly, verify with references</li>
+    <li>Check correspondent bank is also crypto-tolerant</li>
+    <li>Verify travel rule and source-of-funds compliance</li>
+    <li>Look for: Yellow Card, Bundle, Valr (Africa); Bitso, Mercado Bitcoin (Brazil)</li>
+  </ul>
+  <h4>🎰 iGaming</h4>
+  <ul>
+    <li>Requires explicit risk appetite confirmation</li>
+    <li>Verify chargeback/dispute handling</li>
+    <li>Check settlement speed — gaming operators need fast fund access</li>
+  </ul>
+  <h4>📈 Forex</h4>
+  <ul>
+    <li>Handle frequent, high-value, cross-border transactions</li>
+    <li>Check multi-currency account or FX capabilities</li>
+    <li>Verify licensing covers forex-related processing</li>
+  </ul>
+</div>
+
+<hr>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2 id="s5">5. Corridor Launch Strategy — 90-Day Plan</h2>
+
+<div class="callout callout-green">
+  <strong>Principle:</strong> Launch narrow, learn fast, expand methodically. One primary corridor. Not five markets simultaneously.
+</div>
+
+<div class="phase-timeline">
+  <div class="phase">
+    <div><div class="phase-label">Phase 1</div><div class="phase-days">Days 1–30</div></div>
+    <div class="phase-content">
+      <strong>Market Discovery</strong>
+      <p>Complete market scoring with actual data. 10+ customer discovery calls. Regulatory feasibility with local legal advisors. Map payment ecosystem. Identify 20–30 PSP candidates per market.</p>
+      <p><em>Deliverable: Market scorecard, demand validation, ecosystem map, PSP longlist. Decision: select first corridor.</em></p>
+    </div>
+  </div>
+  <div class="phase">
+    <div><div class="phase-label">Phase 2</div><div class="phase-days">Days 30–45</div></div>
+    <div class="phase-content">
+      <strong>Partner Selection</strong>
+      <p>Score top 10 PSPs using 100-point scorecard. Shortlist 5–10. Outreach via warm intros. 8–10 discovery calls. Full due diligence on top 4–6. Negotiate commercial terms.</p>
+      <p><em>Deliverable: Signed agreements with primary + backup PSPs.</em></p>
+    </div>
+  </div>
+  <div class="phase">
+    <div><div class="phase-label">Phase 3</div><div class="phase-days">Days 45–75</div></div>
+    <div class="phase-content">
+      <strong>Integration</strong>
+      <p>Build PSP abstraction layer from Day 1. API integration with sandbox. Payment flow implementation. Error handling, retry logic, alerting. Integration + security testing. Settlement testing. Compliance approval.</p>
+      <p><em>Key: PSP abstraction layer is non-negotiable. Adding new PSPs must be a config change, not a rewrite.</em></p>
+    </div>
+  </div>
+  <div class="phase">
+    <div><div class="phase-label">Phase 4</div><div class="phase-days">Days 75–90</div></div>
+    <div class="phase-content">
+      <strong>Pilot & Launch</strong>
+      <p>3–5 pilot customers per corridor. $1K–$10K controlled volume. Monitor every transaction. Collect feedback. Manual reconciliation. If pilot succeeds → open for general onboarding.</p>
+      <p><em>Success: >95% success rate, on-time settlement, zero compliance incidents. Deliverable: One live corridor with metrics dashboard. Begin scoping second corridor.</em></p>
+    </div>
+  </div>
+</div>
+
+<h3>Payment Failure Management</h3>
+<table>
+  <thead><tr><th>Failure Type</th><th>Response</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td>Technical (PSP downtime)</td><td>Auto-retry on backup</td><td>Alert PSP, log incident</td></tr>
+    <tr><td>Compliance (AML block)</td><td>Route to compliance</td><td>No auto-retry</td></tr>
+    <tr><td>Liquidity (insufficient funds)</td><td>Retry on backup</td><td>Alert PSP for replenishment</td></tr>
+    <tr><td>Customer (wrong details)</td><td>Notify customer</td><td>No retry</td></tr>
+  </tbody>
+</table>
+<div class="callout callout-warn">
+  <strong>Escalation:</strong> Failure rate &gt;5% → immediate review. &gt;10% → corridor hold. Repeated failures from same PSP → volume shift.
+</div>
+
+<hr>
+
+<!-- ==================== SECTION 6 ==================== -->
+<h2 id="s6">6. Payment Supply Network Management</h2>
+
+<div class="callout callout-purple">
+  <strong>Principle:</strong> After launch, the network becomes a data business. The companies that win combine local partnerships, compliance discipline, payment reliability, and intelligent routing.
+</div>
+
+<h3>Partner Performance Monitoring</h3>
+<table>
+  <thead><tr><th>Metric</th><th>Target</th><th>Red Flag</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td>Transaction Success Rate</td><td>&gt;97%</td><td>&lt;92%</td><td>Review with PSP, shift volume</td></tr>
+    <tr><td>Cost Per Transaction</td><td>Below market</td><td>&gt;20% above</td><td>Renegotiate or shift</td></tr>
+    <tr><td>Settlement Time</td><td>T+1 or better</td><td>T+3+ consistently</td><td>Escalate, check cash flow</td></tr>
+    <tr><td>Failure Reasons</td><td>Mostly customer</td><td>Mostly PSP-side</td><td>Technical review</td></tr>
+    <tr><td>Customer Complaints</td><td>&lt;0.5%</td><td>&gt;2%</td><td>Joint investigation</td></tr>
+    <tr><td>API Uptime</td><td>&gt;99.5%</td><td>&lt;98%</td><td>SLA enforcement</td></tr>
+  </tbody>
+</table>
+
+<h3>Smart Payment Routing</h3>
+<div class="card">
+  <p><strong>Cost-based routing:</strong> Lowest cost PSP for each payment type, amount, corridor</p>
+  <p><strong>Reliability-based routing:</strong> Highest success rate for that transaction type</p>
+  <p><strong>Load balancing:</strong> Distribute volume to maintain leverage + avoid single points of failure</p>
+  <p><strong>Latency-based routing:</strong> Fastest settlement for time-sensitive payments</p>
+</div>
+
+<h3>The Data Flywheel</h3>
+<div class="flywheel">
+  Better success rates → more customers → more volume → stronger PSP relationships → better pricing → more customers → <strong>repeat</strong>
+</div>
+
+<h3>Transaction Data as Competitive Advantage</h3>
+<ol>
+  <li><strong>Pricing intelligence:</strong> True cost of every payment type in every corridor</li>
+  <li><strong>Reliability benchmarks:</strong> Quantified PSP performance by payment type</li>
+  <li><strong>Demand prediction:</strong> Volume trends reveal growth, seasonality, emerging demand</li>
+  <li><strong>Risk modeling:</strong> More data = better models = lower costs</li>
+  <li><strong>Customer insight:</strong> Payment behavior reveals new product opportunities</li>
+</ol>
+
+<hr>
+
+<!-- ==================== SECTION 7 ==================== -->
+<h2 id="s7">7. Growth & Partnership Operating Model</h2>
+
+<h3>Weekly Cadence</h3>
+<div class="card">
+  <p><strong>Monday — Partner Performance Review</strong> (30 min): Dashboard, red flags, follow-ups</p>
+  <p><strong>Wednesday — Market Intelligence</strong> (30 min): Regulatory changes, competitor moves, new proposals</p>
+  <p><strong>Friday — Corridor Operations Standup</strong> (30 min): Onboarding pipeline, integrations, escalations</p>
+</div>
+
+<h3>Monthly Cadence</h3>
+<div class="card">
+  <p><strong>PSP Scorecard Review</strong> (60 min): Updated scores, volume/revenue, cost analysis, partner health</p>
+  <p><strong>Corridor Expansion Review</strong> (60 min): Performance vs. projections, demand signals, resource allocation</p>
+</div>
+
+<h3>Quarterly Cadence</h3>
+<div class="card">
+  <p><strong>New Market Evaluation</strong> (2 hrs): Market scoring refresh, competitive landscape, go/no-go, resource planning</p>
+</div>
+
+<h3>Growth Operations KPIs</h3>
+
+<div class="callout callout-green">
+  <strong>Philosophy:</strong> Under-promise, over-deliver. Every number is a minimum floor, not a stretch target. Public-facing projections should be even more conservative.
+</div>
+
+<h4>Supply Growth</h4>
+<table>
+  <thead><tr><th>KPI</th><th>Q1 (Prove It Works)</th><th>Q2 (Prove It Scales)</th><th>H2 (Prove It's a Business)</th></tr></thead>
+  <tbody>
+    <tr><td>Active PSP Partnerships</td><td>1–2</td><td>3–4</td><td>6–8</td></tr>
+    <tr><td>Live Corridors</td><td>1</td><td>2</td><td>4</td></tr>
+    <tr><td>Payment Methods Supported</td><td>2</td><td>3–4</td><td>5–6</td></tr>
+  </tbody>
+</table>
+
+<h4>Business Growth</h4>
+<table>
+  <thead><tr><th>KPI</th><th>Q1 (Prove It Works)</th><th>Q2 (Prove It Scales)</th><th>H2 (Prove It's a Business)</th></tr></thead>
+  <tbody>
+    <tr><td>Monthly Payment Volume</td><td>$25–100K</td><td>$100–300K</td><td>$500K–2M</td></tr>
+    <tr><td>Monthly Revenue</td><td>$1–4K</td><td>$5–12K</td><td>$20–80K</td></tr>
+    <tr><td>Active Customers</td><td>3–5</td><td>8–15</td><td>25–50</td></tr>
+  </tbody>
+</table>
+
+<h4>Performance</h4>
+<table>
+  <thead><tr><th>KPI</th><th>Q1 (Prove It Works)</th><th>Q2 (Prove It Scales)</th><th>H2 (Prove It's a Business)</th></tr></thead>
+  <tbody>
+    <tr><td>Transaction Success Rate</td><td>&gt;90% (pilot)</td><td>&gt;95%</td><td>&gt;97%</td></tr>
+    <tr><td>Settlement Time</td><td>T+2–3 (pilot)</td><td>T+2</td><td>T+1–2</td></tr>
+    <tr><td>Cost Per Transaction</td><td>Baseline</td><td>-5%</td><td>-10%</td></tr>
+  </tbody>
+</table>
+
+<h4>Partnership Health</h4>
+<table>
+  <thead><tr><th>KPI</th><th>Q1 (Prove It Works)</th><th>Q2 (Prove It Scales)</th><th>H2 (Prove It's a Business)</th></tr></thead>
+  <tbody>
+    <tr><td>Partner Retention</td><td>100%</td><td>100%</td><td>&gt;90%</td></tr>
+    <tr><td>Pricing Improvements</td><td>0 (building trust)</td><td>1 PSP renegotiated</td><td>2–3 PSPs renegotiated</td></tr>
+    <tr><td>Time to New Corridor</td><td>60–90 days</td><td>45–60 days</td><td>30–45 days</td></tr>
+  </tbody>
+</table>
+
+<h4>Why These Numbers</h4>
+<div class="callout" style="border-left-color:var(--accent);background:rgba(59,130,246,0.08);">
+  <ul style="margin:0;">
+    <li><strong>Q1 is about proving one corridor works, not scaling.</strong> Most corridors take 2–4 weeks of customer discovery + 4–8 weeks of integration. Getting 1 corridor live in 90 days is a realistic win.</li>
+    <li><strong>$25–100K monthly volume in Q1</strong> is honest for pilot customers. If it's higher, great — but don't plan around it.</li>
+    <li><strong>Revenue of $1–4K/month in Q1</strong> covers 1–2 people's time, not the company's burn. That's fine — this is a supply-side investment.</li>
+    <li><strong>Success rate starts at >90%</strong> because pilot transactions will surface edge cases. >95% by Q2 is realistic after fixing those.</li>
+    <li><strong>Cost reduction of -5% to -10%</strong> is achievable through volume renegotiation. -20% requires 12+ months of leverage.</li>
+  </ul>
+</div>
+
+<hr>
+
+<!-- ==================== EXEC SUMMARY ==================== -->
+<div class="exec-summary" id="s8">
+  <h2>8. Final Perspective</h2>
+
+  <div class="callout-purple callout" style="margin-top:0;">
+    <strong>My first objective would not be building the largest PSP network. It would be building the most reliable payment network.</strong>
+  </div>
+
+  <h3>The Winning Strategy</h3>
+  <div class="card" style="text-align:center;">
+    <p style="font-size:1.05rem;"><strong>Find demand → Validate regulation → Map ecosystem → Select quality PSPs → Launch one corridor → Optimize through data → Expand regionally</strong></p>
+  </div>
+
+  <h3>Key Principles</h3>
+  <ul>
+    <li><strong>Corridor-first thinking</strong> — think in routes, not markets</li>
+    <li><strong>Reliability over scale</strong> — one working corridor beats five broken ones</li>
+    <li><strong>Data compounds</strong> — every transaction makes the network smarter</li>
+    <li><strong>Transparency with partners</strong> — never hide the use case, especially crypto</li>
+    <li><strong>Redundancy is non-negotiable</strong> — 2+ PSPs per corridor, always</li>
+    <li><strong>Depth before breadth</strong> — prove one corridor, then replicate</li>
+  </ul>
+
+  <h3>Timeline</h3>
+  <table>
+    <thead><tr><th>Horizon</th><th>Outcome</th></tr></thead>
+    <tbody>
+      <tr><td><strong>90 Days</strong></td><td>One live corridor with 2 PSPs, pilot customers processing real transactions, playbook documented</td></tr>
+      <tr><td><strong>6 Months</strong></td><td>Two live corridors, 3–4 PSP partnerships, growing volume, unit economics validated</td></tr>
+      <tr><td><strong>12 Months</strong></td><td>Four corridors, 6–8 PSP partners, repeatable launch playbook, moving toward profitability</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout" style="margin-top:20px;border-left-color:var(--accent2);background:rgba(139,92,246,0.08);">
+    <strong>The moat:</strong> The payment supply network is the moat. Everything else is a feature.
+  </div>
+</div>
+
+</div>
+</body>
+</html>
