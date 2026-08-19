@@ -611,7 +611,7 @@ The data advantage compounds over time:
 
 ### Growth Operations KPIs
 
-> **Philosophy:** Under-promise, over-deliver. Every number below is a minimum floor, not a stretch target. It's better to exceed a modest target than to miss an ambitious one. Public-facing projections should be even more conservative.
+> **Philosophy:** Every corridor starts with a partner. The speed and quality of PSP partnerships directly determines how fast Riverpe can launch, scale, and win. These KPIs track the supply side — the partnerships, corridors, and integrations that make revenue possible. No supply, no growth.
 
 **Supply Growth**
 | KPI | Q1 (Prove It Works) | Q2 (Prove It Scales) | H2 (Prove It's a Business) |
