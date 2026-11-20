@@ -1,0 +1,3048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riverpe — Payment Supply Network Framework v4</title>
+<meta name="description" content="Access-first playbook for building payment corridors: regulatory gate, launch feasibility, treasury and float, unit economics, and one worked corridor.">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e4e4e7;
+    --muted: #9ca3af;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e1b4b 100%);
+    padding: 56px 32px 44px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p { color: var(--muted); font-size: 0.92rem; }
+  .hero .meta { margin-top: 14px; font-size: 0.8rem; color: #6b7280; }
+  .container { max-width: 960px; margin: 0 auto; padding: 36px 28px 90px; }
+  h1, h2, h3, h4 { color: #f8fafc; font-weight: 700; }
+  h2 {
+    font-size: 1.45rem;
+    margin-top: 46px;
+    margin-bottom: 14px;
+    padding-bottom: 9px;
+    border-bottom: 2px solid var(--border);
+  }
+  h3 { font-size: 1.1rem; margin-top: 26px; margin-bottom: 8px; color: #e2e8f0; }
+  h4 { font-size: 1rem; margin-top: 20px; margin-bottom: 6px; color: #cbd5e1; }
+  p, li { margin-bottom: 10px; }
+  ul, ol { padding-left: 22px; margin-bottom: 14px; }
+  li { margin-bottom: 6px; }
+  strong { color: #f1f5f9; }
+  a { color: #60a5fa; }
+  code {
+    background: #27293a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.86rem;
+    color: #93c5fd;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 22px;
+    font-size: 0.86rem;
+    display: block;
+    overflow-x: auto;
+  }
+  th, td {
+    padding: 9px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--surface);
+    font-weight: 600;
+    color: #e2e8f0;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+  }
+  tr:hover td { background: rgba(59,130,246,0.04); }
+  blockquote {
+    background: rgba(139,92,246,0.07);
+    border-left: 3px solid var(--accent2);
+    padding: 16px 22px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 18px 0;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+  }
+  blockquote p { margin-bottom: 6px; }
+  blockquote ol { margin-bottom: 0; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+  .note {
+    background: rgba(245,158,11,0.08);
+    border-left: 3px solid var(--amber);
+    padding: 12px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 16px 0;
+    font-size: 0.86rem;
+    color: #d1d5db;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: rgba(59,130,246,0.15);
+    color: #60a5fa;
+  }
+  em { color: #9ca3af; }
+  @media (max-width: 640px) {
+    .hero { padding: 38px 18px 32px; }
+    .hero h1 { font-size: 1.5rem; }
+    .container { padding: 22px 14px 60px; }
+    h2 { font-size: 1.2rem; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 7px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>Riverpe Payment Supply Network Framework v4</h1>
+  <p>Access-gated. Sourced or withdrawn. One corridor worked to the float, with the treasury that funds it.</p>
+  <p class="meta">Prepared for Riverpe Founding Team &middot; 20 November 2026 &middot; supersedes v2middot; supersedes v3</p>
+</div>
+<div class="container">
+<p><strong>Status:</strong> completed framework, v4. Supersedes v3 (20 November 2026) and v2 (August 2026).
+<strong>Prepared for:</strong> Riverpe founding team, prospective banking partners and institutional investors.
+<strong>Author:</strong> candidate for Head of Growth Operations / Partnerships / Market Expansion.
+<strong>Document date:</strong> 20 November 2026. <strong>All sources accessed 20 November 2026.</strong></p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Riverpe proposes to run a small number of payment corridors as a supply business: licensed counterparties, funded balances, settled obligations. Revenue comes from a take rate on cross-border payout. The binding constraint is float, not demand.</p>
+<p>The provisional first corridor is <strong>Côte d'Ivoire ← France</strong> — euros collected in France, paid out to Ivorian wallets and bank accounts. It is not the largest opportunity assessed; Brazil scores higher on capability. It is the only corridor where a five-figure float funds a live operation, because the XOF is pegged to the euro at 655.957, SEPA settles same or next day, and the payout leg is domestic and instant.</p>
+<p>Three things gate launch: a BCEAO-licensed payout partner, an approved intermediary bank for the cross-border leg (payment institutions may not originate payments abroad), and about $60,000 of committed float.</p>
+<p>Unresolved: no partner has been approached, the 4.05% corridor benchmark and the 0.8% PI-SPI cap compress pricing, and no primary interview has been completed.</p>
+<hr>
+<h2 id="how-to-read-the-evidence-in-this-document">How to read the evidence in this document</h2>
+<p>Every material claim carries one of these labels. They are not decoration; they tell a reader how much weight the number can bear.</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Meaning</th>
+<th>Treatment in decisions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Verified</strong></td>
+<td>Primary instrument or dataset read directly: regulator text, central-bank statistics, official register</td>
+<td>Can be relied on; re-check the register before signing</td>
+</tr>
+<tr>
+<td><strong>Secondary</strong></td>
+<td>Reputable secondary reporting of a primary source not directly read</td>
+<td>Directional; confirm before contractual commitment</td>
+</tr>
+<tr>
+<td><strong>Estimate</strong></td>
+<td>Author's calculation from labelled inputs, with the arithmetic shown</td>
+<td>Reproducible; challenge the inputs, not the maths</td>
+</tr>
+<tr>
+<td><strong>Assumption</strong></td>
+<td>Planning figure with no current market quote</td>
+<td>Replace with a quoted rate card before launch</td>
+</tr>
+<tr>
+<td><strong>Pending validation</strong></td>
+<td>Plausible, unconfirmed, specific to a partner or regulator conversation</td>
+<td>Cannot be used in a customer promise or a deck claim</td>
+</tr>
+<tr>
+<td><strong>Unknown</strong></td>
+<td>Not established by this research</td>
+<td>Listed in §13 with the test that would resolve it</td>
+</tr>
+</tbody>
+</table>
+<p>Two conventions matter for reading the rest:</p>
+<ul>
+<li><strong>Corridor notation is <code>payout ← funding</code>.</strong> "Côte d'Ivoire ← France" means funded in France, paid out in Côte d'Ivoire. Float sits on the payout side, so the arrow points at the balance sheet that has to be funded.</li>
+<li><strong>Market score ≠ launch order.</strong> The score in §3 measures whether a market can be operated. Launch order in §4 is decided by demonstrated access and by whether the available capital can fund the float. A market can score highly and still not be first.</li>
+</ul>
+<hr>
+<h2 id="1-original-thesis-and-business-model">1. Original Thesis and Business Model</h2>
+<h3 id="11-the-thesis-preserved-from-v1-and-v2">1.1 The thesis, preserved from v1 and v2</h3>
+<p>Payment infrastructure is supply-constrained, not demand-constrained. Diaspora senders already want to move money; small importers already owe suppliers. What is scarce is a set of licensed, funded, reliable counterparties inside a specific corridor, plus the operational discipline to settle through them without failing.</p>
+<p>The v2 formulation — "own the supply side, not the demand side" — is retained. So is the operating consequence: a corridor is a <em>stack of contracts and balances</em>, not a list of logos on a website. Three signed partners with funded accounts beat thirty integrations with no float.</p>
+<p>What changes in v4 is how the thesis is measured. v2 counted corridors and partners. This version counts net contribution per unit of volume and days of float cover, because those are the numbers that decide whether the next corridor is affordable.</p>
+<h3 id="12-what-riverpe-actually-sells">1.2 What Riverpe actually sells</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What Riverpe provides</th>
+<th>Who pays</th>
+<th>Revenue mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Corridor access</strong></td>
+<td>A settlement path from a funding market to a payout market that a customer cannot build alone</td>
+<td>Sender or sending business</td>
+<td>Take rate on payout value</td>
+</tr>
+<tr>
+<td><strong>FX execution</strong></td>
+<td>Conversion at a published rate with the spread embedded</td>
+<td>Sender, implicitly</td>
+<td>Spread between reference and applied rate</td>
+</tr>
+<tr>
+<td><strong>Payout reach</strong></td>
+<td>Wallet, bank and cash-out coverage through licensed local partners</td>
+<td>Sender, bundled</td>
+<td>Included in the take rate</td>
+</tr>
+<tr>
+<td><strong>Operational reliability</strong></td>
+<td>Success rate, settlement timing, exception handling</td>
+<td>Business customers, via premium pricing</td>
+<td>Higher take rate, not a separate fee</td>
+</tr>
+</tbody>
+</table>
+<p>The fourth line is the strategy. Reliability is the only durable differentiator available to a company that does not own a licence, a bank or a wallet network, and it can only be sold at a premium if it is measured and published.</p>
+<h3 id="13-the-business-model-in-one-page">1.3 The business model in one page</h3>
+<p><code>Customer (France, EUR)
+   |  EUR 206.00 for a EUR 200.00 payout
+   v
+Funding-side payment provider  -- collection, KYC at source
+   |  EUR 205.30 net of collection fee
+   v
+Approved intermediary bank (RFE-mandated)  -- FX + cross-border settlement + reporting
+   |  XOF credited to Riverpe's payout account
+   v
+Licensed payout provider (BCEAO authorisation)  -- bulk disbursement via PI-SPI
+   |
+   v
+Beneficiary wallet or bank account (XOF)</code></p>
+<p>Four counterparties, three of them regulated, one of them a bank by legal requirement rather than commercial preference. That structure is what the float in §5 has to fund and what the unit economics in §6 have to pay for.</p>
+<h3 id="14-what-riverpe-is-not">1.4 What Riverpe is not</h3>
+<ul>
+<li><strong>Not a wallet.</strong> It does not hold customer funds as an e-money issuer in year one; that requires an establishment licence and XOF 300,000,000 of paid-up capital (§2.3).</li>
+<li><strong>Not an FX broker.</strong> It buys conversion from an approved intermediary and resells at a margin.</li>
+<li><strong>Not a marketplace.</strong> Integrations are not the product; funded settlement capacity is.</li>
+<li><strong>Not a remittance brand at launch.</strong> The first customers are businesses and diaspora senders reached through partners, not a consumer app competing on advertising.</li>
+</ul>
+<hr>
+<h2 id="2-market-selection-and-regulatory-eligibility">2. Market Selection and Regulatory Eligibility</h2>
+<p>Regulatory eligibility is decided <strong>before</strong> any commercial scoring. A market that fails this section is not scored, not ranked and not compared on volume. This replaces v2's approach, where "regulatory clarity" was 15% of a weighted score and could be outvoted by market size.</p>
+<h3 id="21-the-five-questions-that-must-be-answered-in-writing">2.1 The five questions that must be answered in writing</h3>
+<p>For each market, by someone qualified to answer — a licensed partner's compliance officer, or counsel — not by inference from a website:</p>
+<ol>
+<li>Which entity type may settle the <strong>payout</strong> leg, and can a licensed partner carry it, or is a Riverpe-owned authorisation required?</li>
+<li>Does the partner's authorisation cover this specific use case — cross-border remittance, B2B supplier payout, crypto-originated funds — or only domestic collection?</li>
+<li><strong>Who may legally originate the cross-border leg?</strong> This is the question v3 got wrong and it is now first-order (§2.2).</li>
+<li>What KYC is required, at which threshold, and who performs it — Riverpe, the funding-side provider, the payout partner, or all three?</li>
+<li>What reporting, sanctions and PEP-screening obligations attach, and which are delegated by contract?</li>
+</ol>
+<h3 id="22-cote-divoire-the-correction-that-changes-the-corridor-design">2.2 Côte d'Ivoire: the correction that changes the corridor design</h3>
+<p>Three instruments govern this market, and reading them changes the partner structure.</p>
+<p><strong>(a) Payment institutions are a new, real regime — not a partner-only grey area.</strong> BCEAO Instruction n°001-01-2024 of 23 January 2024 governs payment services in WAEMU and created the <em>établissement de paiement</em> (EP). Minimum capital is tiered by licensed activity: XOF 10,000,000 for account aggregation only, XOF 20,000,000 for payment initiation only, XOF 30,000,000 for both, and XOF 100,000,000 where the authorisation covers the wider service set including fund transfers [S1]. The union register listed 31 authorised EPs as at 28 February 2026, of which <strong>9 are in Côte d'Ivoire</strong>, all first authorised between May and September 2025 [S2]. A twelve-month-old regime with nine licensees is a market where a licensed payout partner can be found and verified — and where a direct licence is a real option later, at roughly XOF 100m (about $165,000 at 655.957) rather than the multi-million sums an e-money licence implies.</p>
+<p><strong>(b) E-money issuance is a different, heavier licence.</strong> An <em>établissement de monnaie électronique</em> requires XOF 300,000,000 fully subscribed and paid in cash before authorisation [S3]. This is why Riverpe should not plan to issue wallets in year one. It should pay out into wallets that someone else issues.</p>
+<p><strong>(c) The decisive constraint: EPs and EMIs may not originate payments abroad.</strong> Under Règlement n°06/2024/CM/UEMOA of 20 December 2024 and its implementing Instruction n°01/07/2025/RFE of 1 August 2025, transfers to and from outside UEMOA must be executed through an <strong>approved intermediary</strong> — a bank designated by the Finance Minister on BCEAO's advice, listed annually [S4, S5]. Article 26 is explicit: e-money institutions and payment institutions "ne sont pas habilités à émettre des paiements sur l'étranger" (are not authorised to make payments abroad); they may receive funds originating outside UEMOA, under the responsibility of an approved intermediary [S4].</p>
+<p><strong>What this means operationally.</strong> A France → Côte d'Ivoire corridor cannot be built from three PSPs alone. It needs:</p>
+<table>
+<thead>
+<tr>
+<th>Leg</th>
+<th>Entity required</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EUR collection in France</td>
+<td>French payment institution, or Riverpe as its registered agent</td>
+<td>PSD2 scope; SEPA reach</td>
+</tr>
+<tr>
+<td>EUR→XOF conversion and cross-border settlement</td>
+<td><strong>Approved intermediary bank in WAEMU</strong></td>
+<td>RFE Regulation art. 26; EPs/EMIs may not originate external payments</td>
+</tr>
+<tr>
+<td>XOF payout to wallets and accounts</td>
+<td>BCEAO-authorised EP, or an EMI's distribution network</td>
+<td>Domestic disbursement; PI-SPI connectivity</td>
+</tr>
+<tr>
+<td>Reporting and documentation</td>
+<td>Approved intermediary, with Riverpe supplying underlying documents</td>
+<td>RFE declarations per transfer</td>
+</tr>
+</tbody>
+</table>
+<p>This makes the bank a <strong>regulatory requirement in the settlement position</strong>, not a commercial preference for cheap settlement. v3 described a "partner-only licence path" and put the bank in as the preferred primary partner on cost grounds. The conclusion survives; the reasoning was incomplete, and the float consequence is material (§5.3).</p>
+<p><strong>(d) The domestic rail is now price-capped and interoperable.</strong> BCEAO's PI-SPI platform launched on 30 September 2025; from 2 November 2026 interoperable e-money transfers in WAEMU must route through it, sending is free up to XOF 8,000 cumulative per user per participant per day, charges above that are capped at 0-0.8% before tax, and receiving is free [S6, S7]. Cross-border UEMOA transfers align to the same terms from 1 June 2027 [S6]. The platform reported 175 connected participants and reach to more than 38 million people at the time of the pricing revision [S7].</p>
+<p>Two consequences, both material:</p>
+<ul>
+<li><strong>The payout leg is becoming a utility.</strong> A 0.8% regulated ceiling on the domestic e-money transfer compresses what any intermediary can charge for "wallet payout" and moves the margin to the cross-border and FX legs.</li>
+<li><strong>A regional reference price is being set.</strong> Intra-UEMOA transfers get cheaper from June 2027. France→Côte d'Ivoire is outside that scope, but customers will compare, and any price above the regional ceiling needs a visible reliability or FX justification.</li>
+</ul>
+<p><strong>Eligibility verdict — Côte d'Ivoire: ELIGIBLE, with three conditions.</strong> A BCEAO-authorised payout partner verified on the register; an approved intermediary bank contracted for the cross-border leg; RFE-compliant documentation per transfer. No Riverpe-owned licence is required to start; a direct EP authorisation at XOF 100m becomes viable once volume justifies it.</p>
+<h3 id="23-the-other-markets">2.3 The other markets</h3>
+<p><strong>Brazil — ELIGIBLE, with FX-specific conditions.</strong> Payment institution authorisation sits with BACEN. PIX runs on the SPI, a central-bank-operated real-time gross settlement system settling in central-bank money, 24 hours a day, seven days a week, irrevocably [S8]. Crucially, PIX is now the majority rail: 55.2% of all payment transactions in H1 2026, roughly 44 billion transactions out of 79.7 billion, with total value of R$71.9tn [S9]. The condition that decides design: cross-border FX must be executed through an institution authorised by BACEN to operate in the FX market; a payment institution authorisation does not by itself confer that right [S10, pending validation]. <strong>Verdict: eligible; requires a bank or authorised FX counterparty, and a BACEN-licensed payout partner.</strong></p>
+<p><strong>Botswana — ELIGIBLE, small.</strong> A payment services licensing regime exists under the Bank of Botswana; a partner or direct route is available [S11, pending validation]. Convertible currency, functioning banking sector, very small addressable flow. <strong>Verdict: eligible, not a launch candidate.</strong></p>
+<p><strong>Malawi — ELIGIBLE, conditional on FX access.</strong> Licensing exists under the Reserve Bank of Malawi, but the binding constraint is foreign-exchange availability rather than authorisation: kwacha liquidity and allocation can delay settlement independently of any partner's performance [S12, pending validation]. <strong>Verdict: eligible with an FX-availability caveat that cannot be resolved from published sources.</strong></p>
+<p><strong>Democratic Republic of the Congo — NOT ELIGIBLE for year one.</strong> Population 112.8 million and GDP per capita $806.8 [S13] make it the most discussed market in v2, which ranked it third. But the licensing path is not establishable from published instruments, the CDF is not a currency in which to hold a float, and dual USD/CDF circulation adds a documentary layer without adding margin. <strong>Verdict: gate failure. Not scored in §3.</strong> This is the gate doing its job: a market can be large, interesting and ineligible at the same time.</p>
+<h3 id="24-eligibility-summary">2.4 Eligibility summary</h3>
+<table>
+<thead>
+<tr>
+<th>Market</th>
+<th>Payout-leg authority</th>
+<th>Cross-border leg</th>
+<th>Riverpe licence needed to start</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Côte d'Ivoire</td>
+<td>BCEAO EP (9 licensed) or EMI partner</td>
+<td>Approved intermediary bank, mandatory</td>
+<td>No</td>
+<td><strong>Eligible, conditional</strong></td>
+</tr>
+<tr>
+<td>Brazil</td>
+<td>BACEN payment institution</td>
+<td>BACEN-authorised FX institution</td>
+<td>No</td>
+<td><strong>Eligible, conditional</strong></td>
+</tr>
+<tr>
+<td>Botswana</td>
+<td>Bank of Botswana PSP licence</td>
+<td>Commercial bank</td>
+<td>No</td>
+<td>Eligible, small</td>
+</tr>
+<tr>
+<td>Malawi</td>
+<td>Reserve Bank of Malawi PSP licence</td>
+<td>Commercial bank; FX allocation risk</td>
+<td>No</td>
+<td>Eligible, FX-constrained</td>
+</tr>
+<tr>
+<td>Congo (DRC)</td>
+<td>Not establishable</td>
+<td>Not establishable</td>
+<td>Unknown</td>
+<td><strong>Not eligible</strong></td>
+</tr>
+<tr>
+<td>---</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-revised-market-scoring-methodology">3. Revised Market Scoring Methodology</h2>
+<h3 id="31-why-eight-criteria-and-why-these-weights">3.1 Why eight criteria, and why these weights</h3>
+<p>v2 used seven weighted factors including "regulatory clarity" and produced unshowable scores (4.2, 3.8, 2.8). v4 keeps seven commercial and operational criteria, removes regulation entirely because it is now a gate (§2), and adds competitive intensity explicitly rather than as a footnote.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Criterion</th>
+<th>Weight</th>
+<th>Why this weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>PSP availability and accessibility</strong></td>
+<td>20%</td>
+<td>The scarcest input. Without reachable licensed payers, nothing else converts into a corridor. Highest weight because it is the constraint that cannot be bought with capital</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Banking relationship stability</strong></td>
+<td>15%</td>
+<td>Every leg touches a bank, and in WAEMU the cross-border leg <em>requires</em> one. A bank that will not onboard is a hard stop, so this is weighted like infrastructure</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Settlement infrastructure and reliability</strong></td>
+<td>15%</td>
+<td>Determines failure rate, working capital and what can honestly be promised to a customer</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Liquidity availability</strong></td>
+<td>15%</td>
+<td>Float is the binding constraint on a small balance sheet; it is also the cost that scales worst at low volume</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>FX convertibility and volatility</strong></td>
+<td>10%</td>
+<td>Lower weight than liquidity because exposure can be limited by days-of-float even where it cannot be hedged — but a pegged currency removes an entire risk category, so it cannot be ignored</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Commercial opportunity (priced, not sized)</strong></td>
+<td>15%</td>
+<td>Scores the <em>price gap</em> a corridor can capture and whether flow is already paying for a worse service. Deliberately not a market-size input</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Operational complexity</strong></td>
+<td>5%</td>
+<td>A cost, not a strategy. Low weight because complexity is manageable with process, but it sets time-to-launch</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Competitive intensity</strong></td>
+<td>5%</td>
+<td>Real but poorly measurable. Low weight because it cannot be quantified defensibly at this stage, and a low weight is more honest than a confident score</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total 100%.</strong> Weights were set by asking which input, if it failed, would stop the corridor outright. Availability, banking, settlement and liquidity each fail the corridor on their own; that is why the first four carry 65% between them. Commercial opportunity carries weight because a reliable corridor with no price gap is a charity. Complexity and competition are costs of doing business, not gates.</p>
+<p><strong>Deliberate exclusions.</strong> Raw payment volume and population are not inputs — that is what produced v2's size-led ranking. "Regulatory clarity" is not an input, because §2 decides it. Partner <em>count</em> is not an input; partner <em>access</em> is.</p>
+<h3 id="32-scoring-rules">3.2 Scoring rules</h3>
+<ul>
+<li>Each criterion scores <strong>0-5</strong>. 5 is best. For operational complexity, 5 means <em>simplest</em>.</li>
+<li>Anchors: <strong>0</strong> = disqualifying or absent; <strong>1</strong> = exists but unusable at this capital level; <strong>3</strong> = workable with effort; <strong>5</strong> = best available practice in the set.</li>
+<li>Weighted contribution = (score ÷ 5) × weight, so a perfect market scores 100.</li>
+<li>Every score carries an evidence tag and a stated gap. A score without an adjacent source or test is a judgement and is labelled as one.</li>
+<li>Scores are re-scored after the access sprint in §4. A score is not a finding until a partner has quoted.</li>
+</ul>
+<h3 id="33-cote-divoire-730-100">3.3 Côte d'Ivoire — 73.0 / 100</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Wt</th>
+<th>Score</th>
+<th>Contribution</th>
+<th>Evidence and reasoning</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PSP availability</td>
+<td>20</td>
+<td>4</td>
+<td>16.0</td>
+<td>Nine BCEAO-authorised EPs, plus three mobile-money issuers and their distribution networks [S2]; PI-SPI gives a common domestic rail [S6]</td>
+<td>Verified register; <strong>partner access not tested</strong></td>
+</tr>
+<tr>
+<td>Banking stability</td>
+<td>15</td>
+<td>4</td>
+<td>12.0</td>
+<td>Approved intermediaries are designated and published annually [S5]; regional banking sector is supervised and correspondent links to the euro area exist via the French Treasury operating account [S14]. Deduction: onboarding scrutiny of a non-resident fintech is slow and discretionary</td>
+<td>Verified framework; <strong>specific bank appetite unknown</strong></td>
+</tr>
+<tr>
+<td>Settlement infrastructure</td>
+<td>15</td>
+<td>4</td>
+<td>12.0</td>
+<td>Domestic instant settlement via PI-SPI at par; RTGS available for bank legs; payout to wallets is instant. Deduction: holiday calendar and cut-offs still bind the bank leg [S6]</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Liquidity availability</td>
+<td>15</td>
+<td>3</td>
+<td>9.0</td>
+<td>XOF is obtainable through an approved intermediary, but there is no deep non-bank market in XOF and no way to borrow it locally at short notice. Liquidity must be bought forward, not sourced on demand</td>
+<td>Assumption pending validation</td>
+</tr>
+<tr>
+<td>FX convertibility and volatility</td>
+<td>10</td>
+<td>5</td>
+<td>10.0</td>
+<td>XOF pegged to EUR at 655.957, fixed, no band; convertibility through the French Treasury account [S14]</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Commercial opportunity</td>
+<td>15</td>
+<td>3</td>
+<td>9.0</td>
+<td>Corridor average cost 4.05% for EUR 140/345 tickets in Q3 2025, against a digital-only SSA benchmark of 3.54% [S15, S16]: a real gap, but not a wide one. Flow is modest: $1.77bn received nationally in 2024 [S17]</td>
+<td>Verified data; <strong>price gap narrow</strong></td>
+</tr>
+<tr>
+<td>Operational complexity</td>
+<td>5</td>
+<td>3</td>
+<td>3.0</td>
+<td>Four counterparties, RFE documentation per transfer, French-language ops, calendar mismatch between EUR and XOF legs</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Competitive intensity</td>
+<td>5</td>
+<td>2</td>
+<td>2.0</td>
+<td>Incumbents, banks, three wallet networks and nine licensed EPs already serve this corridor; domestic transfers are free below XOF 8,000 and capped at 0.8% above [S6]</td>
+<td>Verified pricing; <strong>share data unavailable</strong></td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>100</strong></td>
+<td></td>
+<td><strong>73.0</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Major risks.</strong> Crowded, price-capped domestic rail; mandatory bank in the settlement position adds onboarding time; RFE documentation creates a per-transfer operational load that a lean team may underestimate.</p>
+<p><strong>Outstanding gaps.</strong> No approved intermediary has been approached; no payout partner has quoted; the share of the corridor's 4.05% average that is fee versus FX margin is known from the benchmark but not the split a specific partner would offer.</p>
+<h3 id="34-brazil-800-100">3.4 Brazil — 80.0 / 100</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Wt</th>
+<th>Score</th>
+<th>Contribution</th>
+<th>Evidence and reasoning</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PSP availability</td>
+<td>20</td>
+<td>4</td>
+<td>16.0</td>
+<td>Deep market of licensed payment institutions and acquirers; PIX participation is broad. Deduction: many are large, well-capitalised and uninterested in a startup's volume</td>
+<td>Secondary; <strong>access not tested</strong></td>
+</tr>
+<tr>
+<td>Banking stability</td>
+<td>15</td>
+<td>4</td>
+<td>12.0</td>
+<td>Deep, well-regulated banking system with functioning FX market. Deduction: onboarding a non-resident with no Brazilian licence is slow</td>
+<td>Secondary</td>
+</tr>
+<tr>
+<td>Settlement infrastructure</td>
+<td>15</td>
+<td>5</td>
+<td>15.0</td>
+<td>SPI settles in central-bank money, 24/7, irrevocably, with no overdrafts permitted [S8]; PIX is 55.2% of transactions [S9]</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Liquidity availability</td>
+<td>15</td>
+<td>5</td>
+<td>15.0</td>
+<td>Onshore and offshore BRL liquidity; FX can be sourced and hedged</td>
+<td>Verified market structure</td>
+</tr>
+<tr>
+<td>FX convertibility and volatility</td>
+<td>10</td>
+<td>3</td>
+<td>6.0</td>
+<td>Floating BRL, hedgeable but not free; hedge cost and margin consume part of the take rate</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Commercial opportunity</td>
+<td>15</td>
+<td>4</td>
+<td>12.0</td>
+<td>Very large flow and a competitive but deep price pool; PIX has already compressed domestic pricing, which caps what a payout-only product can charge</td>
+<td>Verified volume; <strong>corridor pricing not researched</strong></td>
+</tr>
+<tr>
+<td>Operational complexity</td>
+<td>5</td>
+<td>2</td>
+<td>2.0</td>
+<td>Portuguese-language compliance, BACEN authorisation for FX, PIX participation rules, tax withholding complexity</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Competitive intensity</td>
+<td>5</td>
+<td>2</td>
+<td>2.0</td>
+<td>Intense: incumbent remittance brands, fintechs and banks</td>
+<td>Judgement</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>100</strong></td>
+<td></td>
+<td><strong>80.0</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Major risks.</strong> Capital intensity of the float (§5.3); FX execution requires an authorised counterparty; regulatory surface is broader than WAEMU's.</p>
+<p><strong>Outstanding gaps.</strong> No Brazilian corridor pricing study; no FX counterparty identified; the commercial opportunity score is the least evidenced in the set.</p>
+<h3 id="35-botswana-570-100">3.5 Botswana — 57.0 / 100</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Wt</th>
+<th>Score</th>
+<th>Contribution</th>
+<th>Evidence and reasoning</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PSP availability</td>
+<td>20</td>
+<td>3</td>
+<td>12.0</td>
+<td>Licensed PSPs exist in a small market; few candidates, so the "three PSPs" test is structurally hard</td>
+<td>Pending validation</td>
+</tr>
+<tr>
+<td>Banking stability</td>
+<td>15</td>
+<td>4</td>
+<td>12.0</td>
+<td>Well-supervised, sound banking sector; convertible currency</td>
+<td>Secondary</td>
+</tr>
+<tr>
+<td>Settlement infrastructure</td>
+<td>15</td>
+<td>3</td>
+<td>9.0</td>
+<td>Functioning RTGS and instant retail rails; smaller ecosystem, fewer integration options</td>
+<td>Pending validation</td>
+</tr>
+<tr>
+<td>Liquidity availability</td>
+<td>15</td>
+<td>2</td>
+<td>6.0</td>
+<td>Shallow local liquidity; float is easy to hold but hard to source at short notice</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>FX convertibility and volatility</td>
+<td>10</td>
+<td>4</td>
+<td>8.0</td>
+<td>Crawling peg arrangement, orderly; hedge market thin</td>
+<td>Secondary</td>
+</tr>
+<tr>
+<td>Commercial opportunity</td>
+<td>15</td>
+<td>1</td>
+<td>3.0</td>
+<td>Very small addressable flow; no evident price gap worth building for</td>
+<td>Judgement</td>
+</tr>
+<tr>
+<td>Operational complexity</td>
+<td>5</td>
+<td>4</td>
+<td>4.0</td>
+<td>Single currency, single regulator, small partner set</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Competitive intensity</td>
+<td>5</td>
+<td>3</td>
+<td>3.0</td>
+<td>Few competitors, because few customers</td>
+<td>Judgement</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>100</strong></td>
+<td></td>
+<td><strong>57.0</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Major risks.</strong> Too small to amortise fixed cost. <strong>Gaps.</strong> No partner identified; no flow estimate attempted, because published corridor data is thin.</p>
+<h3 id="36-malawi-300-100">3.6 Malawi — 30.0 / 100</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Wt</th>
+<th>Score</th>
+<th>Contribution</th>
+<th>Evidence and reasoning</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PSP availability</td>
+<td>20</td>
+<td>1</td>
+<td>4.0</td>
+<td>Very few licensed providers capable of the payout leg; the three-PSP test likely fails structurally</td>
+<td>Pending validation</td>
+</tr>
+<tr>
+<td>Banking stability</td>
+<td>15</td>
+<td>2</td>
+<td>6.0</td>
+<td>Functioning but constrained; correspondent relationships limited</td>
+<td>Pending validation</td>
+</tr>
+<tr>
+<td>Settlement infrastructure</td>
+<td>15</td>
+<td>2</td>
+<td>6.0</td>
+<td>Domestic rails exist; reliability and integration quality uncertain</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>Liquidity availability</td>
+<td>15</td>
+<td>1</td>
+<td>3.0</td>
+<td>FX allocation is the constraint, not balance size; a funded float can still fail to settle</td>
+<td>Pending validation</td>
+</tr>
+<tr>
+<td>FX convertibility and volatility</td>
+<td>10</td>
+<td>1</td>
+<td>2.0</td>
+<td>Kwacha volatility and FX scarcity; unhedgeable at this scale</td>
+<td>Secondary</td>
+</tr>
+<tr>
+<td>Commercial opportunity</td>
+<td>15</td>
+<td>1</td>
+<td>3.0</td>
+<td>Real need, but a price the market can bear is unlikely to cover the risk</td>
+<td>Judgement</td>
+</tr>
+<tr>
+<td>Operational complexity</td>
+<td>5</td>
+<td>3</td>
+<td>3.0</td>
+<td>Simple counterparty map, difficult liquidity management</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Competitive intensity</td>
+<td>5</td>
+<td>3</td>
+<td>3.0</td>
+<td>Thin competition, thin market</td>
+<td>Judgement</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>100</strong></td>
+<td></td>
+<td><strong>30.0</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Major risks.</strong> A funded position that cannot be converted is worse than no position. <strong>Verdict.</strong> Not fundable at current capital.</p>
+<h3 id="37-what-the-scores-establish-and-what-they-do-not">3.7 What the scores establish, and what they do not</h3>
+<table>
+<thead>
+<tr>
+<th>Market</th>
+<th>Score /100</th>
+<th>Eligible</th>
+<th>Rank by score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brazil</td>
+<td>80.0</td>
+<td>Yes</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Côte d'Ivoire</td>
+<td>73.0</td>
+<td>Yes</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Botswana</td>
+<td>57.0</td>
+<td>Yes</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Malawi</td>
+<td>30.0</td>
+<td>Yes</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Congo (DRC)</td>
+<td>Not scored</td>
+<td><strong>No</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Brazil leads on capability. It has better settlement infrastructure, deeper liquidity and a bigger priced market. <strong>That is not the same as being launchable</strong>, which is the subject of §4 — and anyone reading only the score would choose the wrong corridor. The score answers "can this be operated well?"; launch order answers "can this be started, by this team, with this balance sheet, this quarter?"</p>
+<p>Two honest limitations of the scoring itself:</p>
+<ul>
+<li>The spread between Brazil (80) and Côte d'Ivoire (73) is inside the method's own error bars. Several inputs are judgements, and a two-point change on PSP availability would reverse the order.</li>
+<li>Commercial opportunity is the weakest-evidenced criterion in every market. It is scored on published pricing, not on observed customer willingness to switch.</li>
+</ul>
+<hr>
+<h2 id="4-corridor-prioritisation">4. Corridor Prioritisation</h2>
+<h3 id="41-the-access-gate">4.1 The access gate</h3>
+<p>Market score does not decide launch order. Six execution tests do, and each is pass or fail — not a score.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Test</th>
+<th>Pass condition</th>
+<th>Côte d'Ivoire</th>
+<th>Brazil</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Three payout-side providers <strong>identified</strong></td>
+<td>Named entities, verified on the regulator's register</td>
+<td>Pass (9 licensed EPs published) [S2]</td>
+<td>Pass (large licensed population)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Commercial decision-maker <strong>reachable</strong></td>
+<td>A named individual with pricing authority takes a call within 5 business days</td>
+<td><strong>Not demonstrated</strong></td>
+<td><strong>Not demonstrated</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Banking partner available</td>
+<td>An approved intermediary willing to open accounts and quote an FX margin</td>
+<td><strong>Not demonstrated</strong></td>
+<td><strong>Not demonstrated</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Settlement arrangement obtainable</td>
+<td>Contracted cycle, cut-off and returns policy in writing</td>
+<td><strong>Not demonstrated</strong></td>
+<td><strong>Not demonstrated</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Liquidity source identified</td>
+<td>A named source of XOF/BRL at short notice, priced</td>
+<td><strong>Not demonstrated</strong></td>
+<td><strong>Not demonstrated</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Regulatory path confirmed</td>
+<td>Written confirmation of who originates the cross-border leg</td>
+<td>Pass (RFE requires approved intermediary) [S4]</td>
+<td>Pending validation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Status at the date of this document: four of six tests are undemonstrated in both markets. No partner has been contacted, no rate card has been quoted and no bank has been approached.</strong> Everything below is therefore a <em>ranked hypothesis with a test date</em>, not a finding. Saying so is the only defensible position; a framework that implies meetings it did not hold is worth less than one that states its position plainly.</p>
+<h3 id="42-the-access-sprint-7-calendar-days">4.2 The access sprint (7 calendar days)</h3>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Action</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Build a 12-name list per market from the BCEAO EP register, the approved-intermediary list and competitor payout pages</td>
+<td>12 names, 2 contacts each</td>
+</tr>
+<tr>
+<td>2-3</td>
+<td>Outreach: warm introduction first, cold second; ask for 20 minutes with pricing authority</td>
+<td>Booked calls or logged refusals</td>
+</tr>
+<tr>
+<td>4-5</td>
+<td>Calls: authorisation held, payout methods, quoted fee, settlement cycle, float minimum, RFE documentation</td>
+<td>A quoted rate card per provider, or the reason none was given</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Verify each authorisation against the regulator's published register</td>
+<td>Gate evidence, not self-report</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Written go/no-go per market, signed by the author</td>
+<td>Decision memo</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate rules.</strong> A provider that will not quote has not passed, however senior the contact. Two entities in the same group count as one. A provider absent from the register fails regardless of what it says about itself. A bank that will discuss FX but will not confirm it will act as approved intermediary for this flow has not passed test 3.</p>
+<h3 id="43-why-cote-divoire-france-is-the-provisional-first-corridor">4.3 Why Côte d'Ivoire ← France is the provisional first corridor</h3>
+<p>Four reasons, in order of how much they actually decide:</p>
+<ol>
+<li><strong>The float is fundable.</strong> About $60,000 of committed float (§5.3) against a five-figure balance sheet. Brazil needs roughly $150,000 plus hedge margin because its settlement gap and FX position are both larger. On a small balance sheet this is not a preference; it is the difference between launching and not.</li>
+<li><strong>The currency cannot move against the position.</strong> XOF is fixed at 655.957 to the EUR with no band [S14]. For a first corridor run by a team without a treasury function, removing an entire risk category is worth more than a larger addressable market.</li>
+<li><strong>The payout leg is domestic, instant and price-capped.</strong> PI-SPI settles wallet-to-wallet at par in seconds, with a 0.8% ceiling above the free threshold [S6]. Predictable unit cost on the leg where most transactions fail elsewhere.</li>
+<li><strong>The cross-border leg has a defined legal shape.</strong> RFE requires an approved intermediary bank; that is a constraint, but it is a <em>known</em> constraint with a published list of eligible banks [S5], not an unwritten discretion.</li>
+</ol>
+<p><strong>What this is not.</strong> It is not a claim that Côte d'Ivoire is the bigger opportunity — Brazil scores higher. It is not a claim that access exists — it has not been tested. It is not a claim that pricing is comfortable — the corridor benchmark is 4.05% and the domestic rail is capped at 0.8%, so the take rate has a visible ceiling [S15, S6].</p>
+<h3 id="44-the-fallback-and-the-rule-that-decides">4.4 The fallback, and the rule that decides</h3>
+<p><strong>If Côte d'Ivoire fails the access gate and Brazil passes:</strong> Brazil ← US becomes the first corridor. The cost is stated rather than hidden — minimum float rises to roughly $150,000 plus hedge margin, and the fixed-cost base rises with Portuguese-language compliance and a BACEN-authorised FX counterparty. <strong>If the balance sheet cannot fund that float, Brazil is not a fallback; it is a later phase.</strong></p>
+<p><strong>If both fail:</strong> the answer is not a third market. It is that Riverpe has a distribution or credibility problem, not a supply problem, and the next 90 days belong to customer commitments and partner relationships before any corridor is committed.</p>
+<h2 id="the-rule-stated-once-the-first-corridor-is-whichever-eligible-market-clears-all-six-access-tests-and-whose-minimum-float-is-below-committed-capital-preference-score-and-market-size-do-not-enter-that-sentence"><strong>The rule, stated once.</strong> The first corridor is whichever eligible market clears all six access tests <em>and</em> whose minimum float is below committed capital. Preference, score and market size do not enter that sentence.</h2>
+<h2 id="5-treasury-and-liquidity-strategy">5. Treasury and Liquidity Strategy</h2>
+<p>Treasury is not a support function in this business; it is the product's constraint. v2 treated a liquidity failure as a reason to retry on a backup provider. It is not: a backup with no funded balance fails at the same moment as the primary, and retrying against an empty float converts one failed transaction into a failed corridor.</p>
+<h3 id="51-a-pre-funding-requirements">5.1 A. Pre-funding requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Value</th>
+<th>Basis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Settlement currency (payout side)</td>
+<td>XOF</td>
+<td>Beneficiaries are credited in XOF</td>
+</tr>
+<tr>
+<td>Funding currency</td>
+<td>EUR</td>
+<td>Senders pay in EUR; peg removes translation risk</td>
+</tr>
+<tr>
+<td>Average daily payout at pilot</td>
+<td>$4,000</td>
+<td>600 transactions/month at $200 median ÷ 30</td>
+</tr>
+<tr>
+<td>Peak daily payout</td>
+<td>$7,200</td>
+<td>1.8× average at month-end and salary weeks (assumption)</td>
+</tr>
+<tr>
+<td>Structural settlement gap</td>
+<td>1 business day, extending to 3 over a weekend</td>
+<td>Collection T+0/T+1; bank conversion and credit T+1; payout instant</td>
+</tr>
+<tr>
+<td>Replenishment</td>
+<td>Weekly, plus event-driven</td>
+<td>Refill by SEPA transfer when cover falls below 5 days</td>
+</tr>
+<tr>
+<td>Minimum operating balance, payout account</td>
+<td>$30,000</td>
+<td>Worst-case weekend gap of $21,600 plus 40% headroom</td>
+</tr>
+<tr>
+<td>Minimum balance, aggregation partner</td>
+<td>$12,000</td>
+<td>Three days of average payout held at the aggregator</td>
+</tr>
+<tr>
+<td>Contingency reserve</td>
+<td>$15,000</td>
+<td>One stuck batch resolved manually without missing payroll</td>
+</tr>
+<tr>
+<td><strong>Committed float to launch</strong></td>
+<td><strong>$57,000 (plan $60,000)</strong></td>
+<td>Sum of the three lines above</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why this is higher than the $50,000 in v3.</strong> Two corrections, both from primary sources rather than caution: the RFE regime requires an approved intermediary bank in the settlement position, which adds a bank operating balance that did not exist in the earlier three-PSP design [S4]; and the settlement gap through a weekend is three days, not two, because the bank leg follows the business-day calendar while wallet payout does not. Funding a 2-day gap when the true gap is 3 days is how a corridor runs dry on a Monday.</p>
+<h3 id="52-b-cost-of-capital-and-holding-local-currency">5.2 B. Cost of capital and holding local currency</h3>
+<p>Three distinct costs, routinely conflated:</p>
+<table>
+<thead>
+<tr>
+<th>Cost</th>
+<th>Calculation</th>
+<th>Result at pilot</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Devaluation</strong></td>
+<td>XOF fixed at 655.957, no band [S14]</td>
+<td>Zero by construction</td>
+<td>The reason this corridor is affordable; not a permanent property of the business</td>
+</tr>
+<tr>
+<td><strong>Funding cost of idle balance</strong></td>
+<td>$60,000 × 5% ÷ 12</td>
+<td>$250/month</td>
+<td>At $120,000 monthly volume = <strong>0.21% of volume</strong>, or about 7% of gross revenue</td>
+</tr>
+<tr>
+<td><strong>Conversion cost</strong></td>
+<td>0.25% spread on each refill</td>
+<td>~$126/month at $50,000 refilled monthly</td>
+<td>Already inside unit economics; do not double-count</td>
+</tr>
+<tr>
+<td><strong>Bank and custody fees</strong></td>
+<td>Account, transfer and reporting charges</td>
+<td>$100-200/month (assumption)</td>
+<td>Priced per relationship, not per transaction</td>
+</tr>
+</tbody>
+</table>
+<p>The important number is the second row. At pilot volume, <strong>float carrying cost is 0.21% of volume</strong> — larger than the entire network and reconciliation line. At $1.14m monthly volume the same float costs 0.02%. Float cost is a small-volume problem that scale solves, which is exactly why a pilot cannot be judged on margin.</p>
+<p><strong>Opportunity cost is real and usually ignored.</strong> $60,000 held in a non-interest-bearing XOF operating account earns nothing. At a 5% cost of capital the corridor must generate at least $3,000 a year before it has paid for the privilege of existing, on top of its operating costs.</p>
+<h3 id="53-c-settlement-management">5.3 C. Settlement management</h3>
+<table>
+<thead>
+<tr>
+<th>Leg</th>
+<th>Instrument</th>
+<th>Timing</th>
+<th>Cash effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collection, France</td>
+<td>SEPA Instant Credit Transfer</td>
+<td>Seconds, 24/7, where the payer's provider supports it [S18]</td>
+<td>Receivable cleared same day</td>
+</tr>
+<tr>
+<td>Collection, France</td>
+<td>SEPA Credit Transfer</td>
+<td>By end of the next business day [S19]</td>
+<td>Receivable cleared T+1</td>
+</tr>
+<tr>
+<td>Conversion and cross-border settlement</td>
+<td>Approved intermediary bank</td>
+<td>Value date T+1, subject to cut-off [S20, pending validation]</td>
+<td>XOF credited to payout account</td>
+</tr>
+<tr>
+<td>Payout to wallet</td>
+<td>PI-SPI / partner API</td>
+<td>Instant, 24/7 [S6]</td>
+<td>Cash out immediately</td>
+</tr>
+<tr>
+<td>Payout to bank account</td>
+<td>Domestic transfer</td>
+<td>Same day if before cut-off, else next business day</td>
+<td>Cash out T+0/T+1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The asymmetry that creates the float.</strong> Payout is instant and runs at weekends; the bank leg is a business-day process with a cut-off. A Friday evening payout is funded by Riverpe and reimbursed on Monday or Tuesday. That is the three-day gap in §5.1, and it is structural, not a partner defect.</p>
+<p><strong>Operating rules.</strong></p>
+<ul>
+<li><strong>Cut-off discipline.</strong> No payout batch is released after the bank's cut-off unless the payout account already holds cover for it. Releasing on the assumption of next-day reimbursement is how a corridor discovers its true float requirement at the worst moment.</li>
+<li><strong>Three-way reconciliation daily.</strong> Provider settlement file vs Riverpe ledger vs bank statement. Unexplained breaks are incidents, not backlog.</li>
+<li><strong>Settlement failure procedure.</strong> On a missed settlement: freeze new payout above the cover threshold, notify the partner's operations contact with the batch reference, reconcile to the transaction, and only then release. Never re-send a batch that may already have settled; the second send is a double payment and a compliance event.</li>
+</ul>
+<h3 id="54-d-foreign-exchange-exposure">5.4 D. Foreign exchange exposure</h3>
+<table>
+<thead>
+<tr>
+<th>Exposure</th>
+<th>Size</th>
+<th>Management</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Intraday</strong> — rate moves between collection and conversion</td>
+<td>Up to one day of volume</td>
+<td>Immaterial under the peg; would be material in Brazil</td>
+</tr>
+<tr>
+<td><strong>Overnight and weekend</strong> — XOF held while EUR receivables settle</td>
+<td>1-3 days of volume</td>
+<td>Accepted; peg removes the price risk, leaving only liquidity risk</td>
+</tr>
+<tr>
+<td><strong>Spread</strong> — bank margin versus reference</td>
+<td>0.20-0.35% (assumption, to be quoted)</td>
+<td>Priced into the take rate; measured per transaction, not averaged monthly</td>
+</tr>
+<tr>
+<td><strong>Convertibility</strong> — ability to obtain XOF at all</td>
+<td>Event risk</td>
+<td>Mitigated by holding a working balance rather than converting on demand</td>
+</tr>
+<tr>
+<td><strong>Peg risk</strong> — a change in parity</td>
+<td>Tail risk</td>
+<td>Not hedgeable at this scale. Managed by limiting float to days of volume, not by instrument</td>
+</tr>
+</tbody>
+</table>
+<p>The last row is the honest one. A peg is not a guarantee; it is a low-probability, high-impact exposure that a small operator cannot hedge. The correct response is to keep the position small enough that a parity event is survivable, and to say so to investors rather than describing the corridor as "FX-free".</p>
+<h3 id="55-e-liquidity-failure-management">5.5 E. Liquidity failure management</h3>
+<p>Six failure types, deliberately separated, because they look identical to a customer and require different owners.</p>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>What it actually is</th>
+<th>Owner</th>
+<th>Response</th>
+<th>What not to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Provider technical failure</strong></td>
+<td>API or platform down; balances intact</td>
+<td>Operations</td>
+<td>Route to the second live provider</td>
+<td>Re-send blindly through a queue</td>
+</tr>
+<tr>
+<td><strong>Settlement failure</strong></td>
+<td>Batch sent, funds not credited on time</td>
+<td>Treasury + Partnerships</td>
+<td>Trace with the partner; hold new payout above cover</td>
+<td>Re-send a batch that may have settled</td>
+</tr>
+<tr>
+<td><strong>Liquidity shortage at partner</strong></td>
+<td>Provider's own float at a wallet network is exhausted</td>
+<td>Treasury</td>
+<td>Top up within 4 hours; throttle intake at the threshold</td>
+<td>Assume the backup resolves it — the backup has its own balance</td>
+</tr>
+<tr>
+<td><strong>Treasury funding failure</strong></td>
+<td>Riverpe's own account cannot cover the day's payout</td>
+<td>Treasury (CFO-level)</td>
+<td>Throttle intake, honour in-flight, extend the replenishment</td>
+<td>Queue transactions and hope for a Monday credit</td>
+</tr>
+<tr>
+<td><strong>Banking partner failure</strong></td>
+<td>Approved intermediary suspends the flow or the relationship</td>
+<td>CEO + Treasury</td>
+<td>Activate the second bank; expect 2-4 weeks, not 2 days</td>
+<td>Promise customers continuity you cannot deliver</td>
+</tr>
+<tr>
+<td><strong>FX execution failure</strong></td>
+<td>Rate unavailable or conversion rejected</td>
+<td>Treasury</td>
+<td>Pause payout, execute at next window, absorb the spread</td>
+<td>Quote a rate you cannot obtain</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Treasury escalation ladder.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trigger</th>
+<th>Action</th>
+<th>Authority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cover &lt; 5 days</td>
+<td>Replenish; review next week's payout plan</td>
+<td>Treasury analyst</td>
+</tr>
+<tr>
+<td>Cover &lt; 3 days</td>
+<td>Replenish immediately; notify CFO; hold new customer onboarding</td>
+<td>CFO</td>
+</tr>
+<tr>
+<td>Cover &lt; 2 days</td>
+<td>Throttle intake; prioritise in-flight and payroll-dated transactions</td>
+<td>CFO</td>
+</tr>
+<tr>
+<td>Cover &lt; 1 day</td>
+<td>Stop new intake; publish a status notice to customers</td>
+<td>CEO</td>
+</tr>
+<tr>
+<td>Cover = 0</td>
+<td>Incident response: honour what is funded, communicate what is not, no silent failures</td>
+<td>CEO</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cover is measured in days, not currency.</strong> Cover = deployable float ÷ trailing 7-day peak daily payout. Using the average instead of the peak is the most common way a corridor that "looked funded" fails at month-end.</p>
+<h3 id="56-illustrative-treasury-model-10-business-days-at-pilot-volume">5.6 Illustrative treasury model — 10 business days at pilot volume</h3>
+<p>Opening payout-account balance $50,000. Payouts $4,000/day, $7,200 on days 6-7 (month-end). Collections reimburse two days later.</p>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Payout</th>
+<th>Collection received</th>
+<th>Closing balance</th>
+<th>Cover (days at peak)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>4,000</td>
+<td>0</td>
+<td>46,000</td>
+<td>6.4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4,000</td>
+<td>0</td>
+<td>42,000</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4,000</td>
+<td>4,000</td>
+<td>42,000</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4,000</td>
+<td>4,000</td>
+<td>42,000</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4,000</td>
+<td>4,000</td>
+<td>42,000</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>7,200</td>
+<td>4,000</td>
+<td>38,800</td>
+<td>5.4</td>
+</tr>
+<tr>
+<td>7</td>
+<td>7,200</td>
+<td>4,000</td>
+<td>35,600</td>
+<td>4.9</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4,000</td>
+<td>7,200</td>
+<td>38,800</td>
+<td>5.4</td>
+</tr>
+<tr>
+<td>9</td>
+<td>4,000</td>
+<td>7,200</td>
+<td>42,000</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>10</td>
+<td>4,000</td>
+<td>4,000</td>
+<td>42,000</td>
+<td>5.8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Trough: $35,600 on day 7.</strong> Maximum cumulative deficit is $14,400 (2 × $7,200), which is why the account needs $30,000 rather than $15,000: the deficit plus a weekend extension plus headroom. Everything in this table is an <strong>estimate</strong> built on assumed volume and an assumed 1.8× peak factor. The shape is robust; the numbers are not yet observed.</p>
+<hr>
+<h2 id="6-unit-economics-and-financial-model">6. Unit Economics and Financial Model</h2>
+<p>All figures are <strong>modelled planning numbers built from labelled assumptions</strong>, not quoted rates. They exist to be replaced line by line with a rate card from §4.</p>
+<h3 id="61-definitions-stated-so-the-arithmetic-can-be-checked">6.1 Definitions, stated so the arithmetic can be checked</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GTV</strong></td>
+<td>Gross transaction value — the payout amount, not Riverpe's income</td>
+</tr>
+<tr>
+<td><strong>Gross revenue</strong></td>
+<td>Take rate × GTV</td>
+</tr>
+<tr>
+<td><strong>Direct costs</strong></td>
+<td>Collection fee, payout fee, FX spread, float carry, network/reconciliation</td>
+</tr>
+<tr>
+<td><strong>Gross profit</strong></td>
+<td>Gross revenue − direct costs</td>
+</tr>
+<tr>
+<td><strong>Gross margin</strong></td>
+<td>Gross profit ÷ gross revenue</td>
+</tr>
+<tr>
+<td><strong>Net revenue</strong></td>
+<td>Gross profit, after all variable costs attributable to the transaction</td>
+</tr>
+<tr>
+<td><strong>Contribution margin</strong></td>
+<td>Contribution ÷ gross revenue</td>
+</tr>
+<tr>
+<td><strong>Cost per transaction</strong></td>
+<td>Direct costs ÷ settled transactions</td>
+</tr>
+<tr>
+<td><strong>Break-even volume</strong></td>
+<td>Monthly fixed cost ÷ net contribution rate</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The error this table prevents.</strong> Reporting $120,000 of monthly GTV as "revenue" overstates income by a factor of 33 at a 3% take rate. Every figure below is revenue or contribution, never volume.</p>
+<h3 id="62-base-case-per-transaction-200-ticket">6.2 Base case — per transaction, $200 ticket</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Rate</th>
+<th>Per $200</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer price (take rate)</strong></td>
+<td>3.00%</td>
+<td><strong>$6.00</strong></td>
+<td>Below the 4.05% corridor average and the 3.54% digital benchmark [S15, S16]</td>
+</tr>
+<tr>
+<td>Collection fee (funding-side provider)</td>
+<td>−0.30%</td>
+<td>−$0.60</td>
+<td>SEPA or card collection; assumption</td>
+</tr>
+<tr>
+<td>Payout fee (local provider)</td>
+<td>−0.85%</td>
+<td>−$1.70</td>
+<td>Blended across primary and backup</td>
+</tr>
+<tr>
+<td>FX spread (approved intermediary)</td>
+<td>−0.25%</td>
+<td>−$0.50</td>
+<td>Mid of the 0.20-0.35% assumption</td>
+</tr>
+<tr>
+<td>Float carrying cost</td>
+<td>−0.21%</td>
+<td>−$0.42</td>
+<td>$60,000 at 5% over $120,000 monthly volume</td>
+</tr>
+<tr>
+<td>Network, reconciliation, chargeback</td>
+<td>−0.15%</td>
+<td>−$0.30</td>
+<td>Card disputes, manual recon, monitoring</td>
+</tr>
+<tr>
+<td><strong>Direct cost total</strong></td>
+<td><strong>1.76%</strong></td>
+<td><strong>$3.52</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Net contribution</strong></td>
+<td><strong>1.24%</strong></td>
+<td><strong>$2.48</strong></td>
+<td>Per $1,000 moved: <strong>$12.40</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Gross is 3.00%; net is 1.24%. <strong>59% of the take rate is consumed by direct cost.</strong> That ratio, not the headline price, is the business.</p>
+<h3 id="63-three-scenarios">6.3 Three scenarios</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Conservative</th>
+<th>Base</th>
+<th>Optimistic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Take rate</td>
+<td>2.50%</td>
+<td>3.00%</td>
+<td>4.00%</td>
+</tr>
+<tr>
+<td>Collection fee</td>
+<td>0.40%</td>
+<td>0.30%</td>
+<td>0.25%</td>
+</tr>
+<tr>
+<td>Payout fee</td>
+<td>1.10%</td>
+<td>0.85%</td>
+<td>0.65%</td>
+</tr>
+<tr>
+<td>FX spread</td>
+<td>0.35%</td>
+<td>0.25%</td>
+<td>0.20%</td>
+</tr>
+<tr>
+<td>Float carry</td>
+<td>0.30%</td>
+<td>0.21%</td>
+<td>0.10%</td>
+</tr>
+<tr>
+<td>Network and recon</td>
+<td>0.20%</td>
+<td>0.15%</td>
+<td>0.12%</td>
+</tr>
+<tr>
+<td><strong>Total direct cost</strong></td>
+<td><strong>2.35%</strong></td>
+<td><strong>1.76%</strong></td>
+<td><strong>1.32%</strong></td>
+</tr>
+<tr>
+<td><strong>Net contribution rate</strong></td>
+<td><strong>0.15%</strong></td>
+<td><strong>1.24%</strong></td>
+<td><strong>2.68%</strong></td>
+</tr>
+<tr>
+<td>Net per $200 ticket</td>
+<td>$0.30</td>
+<td>$2.48</td>
+<td>$5.36</td>
+</tr>
+<tr>
+<td>Net per $1,000 moved</td>
+<td>$1.50</td>
+<td>$12.40</td>
+<td>$26.80</td>
+</tr>
+<tr>
+<td>Cost per transaction</td>
+<td>$4.70</td>
+<td>$3.52</td>
+<td>$2.64</td>
+</tr>
+<tr>
+<td>Contribution margin</td>
+<td>6.0%</td>
+<td>41.3%</td>
+<td>67.0%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Scenario assumptions, disclosed.</strong></p>
+<ul>
+<li><em>Conservative:</em> competitive pressure forces the price to 2.50%, payout is quoted at the top of the range, FX margin is worse than expected, and float carry is high because volume stays small. Volume grows from 300 to 600 transactions/month over 12 months.</li>
+<li><em>Base:</em> price holds at 3.00%, blended fees land mid-range, and float cost falls as volume grows. Volume grows from 600 to 2,000 transactions/month.</li>
+<li><em>Optimistic:</em> a reliability premium is earned and sustained at 4.00%, payout is renegotiated to 0.65% on volume, and float is recycles faster. Volume reaches 4,000 transactions/month.</li>
+</ul>
+<p>Fixed cost is held at <strong>$18,000/month</strong> in all three: two loaded salaries, compliance tooling and monitoring, legal and audit amortisation, insurance, and the infrastructure minimum.</p>
+<h3 id="64-monthly-pl-at-pilot-scale-600-transactions-120000-gtv">6.4 Monthly P&amp;L at pilot scale (600 transactions, $120,000 GTV)</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Conservative</th>
+<th>Base</th>
+<th>Optimistic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GTV</td>
+<td>$120,000</td>
+<td>$120,000</td>
+<td>$120,000</td>
+</tr>
+<tr>
+<td>Gross revenue</td>
+<td>$3,000</td>
+<td>$3,600</td>
+<td>$4,800</td>
+</tr>
+<tr>
+<td>Direct costs</td>
+<td>$2,820</td>
+<td>$2,112</td>
+<td>$1,584</td>
+</tr>
+<tr>
+<td>Gross profit</td>
+<td>$180</td>
+<td>$1,488</td>
+<td>$3,216</td>
+</tr>
+<tr>
+<td>Fixed costs</td>
+<td>$18,000</td>
+<td>$18,000</td>
+<td>$18,000</td>
+</tr>
+<tr>
+<td><strong>EBITDA</strong></td>
+<td><strong>−$17,820</strong></td>
+<td><strong>−$16,512</strong></td>
+<td><strong>−$14,784</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The pilot is designed to lose money. What it buys is corridor proof, a failure taxonomy and a rate card that has been tested against real settlement — not margin.</p>
+<h3 id="65-break-even-volume">6.5 Break-even volume</h3>
+<p>Break-even GTV = fixed cost ÷ net contribution rate. At $200 average ticket, transactions = GTV ÷ 200.</p>
+<table>
+<thead>
+<tr>
+<th>Take rate</th>
+<th>Net rate (base cost structure)</th>
+<th>Break-even GTV/month</th>
+<th>Transactions/month</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.0%</td>
+<td>0.24%</td>
+<td>$7,500,000</td>
+<td>37,500</td>
+</tr>
+<tr>
+<td>2.5%</td>
+<td>0.74%</td>
+<td>$2,432,432</td>
+<td>12,162</td>
+</tr>
+<tr>
+<td><strong>3.0%</strong></td>
+<td><strong>1.24%</strong></td>
+<td><strong>$1,451,613</strong></td>
+<td><strong>7,258</strong></td>
+</tr>
+<tr>
+<td>3.5%</td>
+<td>1.74%</td>
+<td>$1,034,483</td>
+<td>5,172</td>
+</tr>
+<tr>
+<td>4.0%</td>
+<td>2.24%</td>
+<td>$803,571</td>
+<td>4,018</td>
+</tr>
+<tr>
+<td>5.0%</td>
+<td>3.24%</td>
+<td>$555,556</td>
+<td>2,778</td>
+</tr>
+<tr>
+<td>6.0%</td>
+<td>4.24%</td>
+<td>$424,528</td>
+<td>2,123</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Worked example of the base row:</strong> $18,000 ÷ 0.0124 = $1,451,612.90; ÷ $200 = 7,258 transactions.</p>
+<h3 id="66-what-the-model-says">6.6 What the model says</h3>
+<p><strong>At a 3% price this corridor needs about $1.45m of monthly volume to break even — twelve times the pilot.</strong> That is attainable in year two and impossible in month four. The corridor is a valid proof of operation and an invalid near-term business, and it should be funded and judged on exactly that basis.</p>
+<p><strong>The price is boxed in from both sides.</strong> The France→Côte d'Ivoire corridor averaged 4.05% total cost in Q3 2025, with a cheapest observed transparent quote at 2.46% [S15]. Domestic transfers in Côte d'Ivoire are free below XOF 8,000 and capped at 0.8% above it [S6]. So a 3% price is: below the corridor average, above the domestic rail, and above the 3.54% digital-only benchmark for the region [S16]. There is room to price at 4%, but only if reliability is demonstrable; there is no room to price at 6% without a product the incumbents do not offer.</p>
+<p><strong>The conservative case does not work at any plausible pilot volume.</strong> At 0.15% net contribution, break-even is $12m a month. That is not a scenario to plan around; it is a warning that a price concession plus a fee miss is existential, and the reason the KPI in §11 triggers at $9 per $1,000 rather than at break-even.</p>
+<p><strong>Decision rule.</strong></p>
+<ul>
+<li>Launch only if <strong>take rate ≥ 3.5%</strong> or a written volume path to <strong>$1.5m/month within four quarters</strong> exists.</li>
+<li>If neither holds, run the corridor as a fixed-budget data exercise with a stop date, and say so before committing the float.</li>
+<li>Report <strong>net contribution per $1,000 moved</strong>, never take rate alone. The first number survives a finance review; the second invites an argument about gross margin that the cost base settles immediately.</li>
+</ul>
+<hr>
+<h2 id="7-worked-corridor-cote-divoire-france">7. Worked Corridor: Côte d'Ivoire ← France</h2>
+<p><strong>Corridor.</strong> Funds collected in France in EUR, paid out in Côte d'Ivoire in XOF to mobile wallets and bank accounts. Median ticket €200. Target customers: diaspora senders and small businesses paying suppliers.</p>
+<p><strong>No provider is named anywhere in this section.</strong> Counterparties are described by operational category, which is what a reader needs in order to map their own market. Fees and timings marked <em>A</em> are illustrative assumptions; those marked <em>V</em> are verified from the sources in §14.</p>
+<h3 id="71-the-counterparties-by-position">7.1 The counterparties, by position</h3>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Category</th>
+<th>Authorisation held</th>
+<th>What it does</th>
+<th>Commercial shape (assumed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>F1</strong></td>
+<td>Funding-side payment institution</td>
+<td>French payment institution, or Riverpe as its registered agent</td>
+<td>Collects EUR by SEPA transfer and card, performs payer KYC</td>
+<td>0.30% of collected value</td>
+</tr>
+<tr>
+<td><strong>B1</strong></td>
+<td>Approved intermediary bank</td>
+<td>Designated intermediary under the RFE regulation [S4, S5]</td>
+<td>Executes FX, moves funds cross-border, credits XOF account, files declarations</td>
+<td>0.25% FX margin plus per-transfer fee</td>
+</tr>
+<tr>
+<td><strong>P1</strong></td>
+<td>Local payout provider — aggregator</td>
+<td>BCEAO <em>établissement de paiement</em> [S1, S2]</td>
+<td>Bulk disbursement to all wallet networks and bank accounts via PI-SPI</td>
+<td>0.85% of payout value</td>
+</tr>
+<tr>
+<td><strong>P2</strong></td>
+<td>Local payout provider — bank-led</td>
+<td>Licensed bank or its payments subsidiary</td>
+<td>Settlement-grade payout, bank-account credits, cheaper at volume</td>
+<td>0.60-0.90%, slower onboarding</td>
+</tr>
+<tr>
+<td><strong>X1</strong></td>
+<td>Liquidity source</td>
+<td>Bank treasury or FX desk at B1</td>
+<td>Supplies XOF forward of need; sets the conversion quote</td>
+<td>Priced into the spread</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why four positions and not three.</strong> The RFE regime forbids payment institutions and e-money institutions from originating payments abroad [S4]. The bank is therefore not a commercial choice between two providers; it is a mandatory node. v3's three-provider design was legally incomplete, and this is the correction that changes the float, the onboarding plan and the contract set — not the thesis.</p>
+<p><strong>Minimum viable redundancy.</strong> F1 + B1 + P1 + P2, with P1 and P2 live simultaneously. A corridor with one payout provider is not a corridor; it is a single point of failure with a marketing site.</p>
+<h3 id="72-the-transaction-lifecycle-step-by-step">7.2 The transaction lifecycle, step by step</h3>
+<p>A single €200 transfer, sender in France, beneficiary in Abidjan holding a wallet.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Step</th>
+<th>Actor</th>
+<th>What happens</th>
+<th>Timing</th>
+<th>Verified?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Initiation</td>
+<td>Customer</td>
+<td>Sender enters amount, beneficiary identifier, purpose. Riverpe quotes the XOF the beneficiary will receive, all-in</td>
+<td>Instant</td>
+<td>Product design</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Collection</td>
+<td>F1</td>
+<td>EUR 206.00 debited (€200 payout + 3.00% take). SEPA Instant if the provider supports it, otherwise SEPA CT</td>
+<td>Seconds to T+1 [S18, S19]</td>
+<td>V</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Receipt confirmation</td>
+<td>F1 → Riverpe</td>
+<td>Webhook with provider reference, amount, payer name, timestamp; signature verified</td>
+<td>Seconds after collection</td>
+<td>V</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Reconciliation (first pass)</td>
+<td>Riverpe</td>
+<td>Transaction matched to quote and to ledger entry; duplicate check by idempotency key; sanctions screening result attached</td>
+<td>&lt; 60 seconds</td>
+<td>Architecture</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Treasury position update</td>
+<td>Riverpe</td>
+<td>Payout obligation booked against the XOF account; available cover recalculated; batch eligibility checked</td>
+<td>Immediate</td>
+<td>Architecture</td>
+</tr>
+<tr>
+<td>6</td>
+<td>FX conversion</td>
+<td>B1</td>
+<td>EUR→XOF at reference 655.957 less 0.25% margin. Conversion booked with value date and rate reference</td>
+<td>Intraday to T+1</td>
+<td>Peg V [S14]; margin A</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Settlement instruction</td>
+<td>B1</td>
+<td>XOF credited to Riverpe's payout account; declaration filed with underlying documents</td>
+<td>T+1, subject to cut-off</td>
+<td>V framework [S4]; timing A</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Payout</td>
+<td>P1</td>
+<td>Batch includes the transaction; funds pushed to the beneficiary wallet over PI-SPI; provider returns a per-item status</td>
+<td>Seconds, 24/7 [S6]</td>
+<td>V</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Reconciliation (second pass)</td>
+<td>Riverpe</td>
+<td>Provider settlement file vs ledger vs bank statement; beneficiary credit confirmed; break logged if status is ambiguous</td>
+<td>Daily</td>
+<td>Architecture</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Revenue and cost posting</td>
+<td>Finance</td>
+<td>Gross revenue, each cost line and net contribution posted per transaction; FX spread measured against reference</td>
+<td>Daily, reported monthly</td>
+<td>Architecture</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73-the-same-transaction-in-numbers">7.3 The same transaction in numbers</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>EUR</th>
+<th>XOF</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payout value</td>
+<td>200.00</td>
+<td>131,191</td>
+<td>At 655.957 (V)</td>
+</tr>
+<tr>
+<td>Take rate 3.00%</td>
+<td>6.00</td>
+<td>3,935</td>
+<td>Revenue, not margin</td>
+</tr>
+<tr>
+<td><strong>Customer pays</strong></td>
+<td><strong>206.00</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Collection fee 0.30%</td>
+<td>−0.60</td>
+<td>−393</td>
+<td>F1</td>
+</tr>
+<tr>
+<td>FX margin 0.25%</td>
+<td>−0.50</td>
+<td>−328</td>
+<td>B1; XOF received falls to 130,863</td>
+</tr>
+<tr>
+<td>Payout fee 0.85%</td>
+<td>−1.70</td>
+<td>−1,115</td>
+<td>P1; beneficiary receives 129,748</td>
+</tr>
+<tr>
+<td>Network, recon, chargeback 0.15%</td>
+<td>−0.30</td>
+<td>−197</td>
+<td>Provisioned</td>
+</tr>
+<tr>
+<td>Float carry 0.21%</td>
+<td>−0.42</td>
+<td>−275</td>
+<td>Monthly allocation</td>
+</tr>
+<tr>
+<td><strong>Total direct cost</strong></td>
+<td><strong>−3.52</strong></td>
+<td><strong>−2,308</strong></td>
+<td>1.76% of payout value</td>
+</tr>
+<tr>
+<td><strong>Net contribution</strong></td>
+<td><strong>2.48</strong></td>
+<td><strong>1,627</strong></td>
+<td>1.24% of payout value</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Check the arithmetic.</strong> 131,191 × 0.0300 = 3,935.7 XOF revenue. 131,191 × 0.0176 = 2,309.0 XOF direct cost (rounding accounts for the 2,308 shown). 3,935.7 − 2,309.0 = 1,626.7 XOF = €2.48 at 655.957. The beneficiary receives 129,748 XOF for €206.00 paid — an effective cost to the sender of 4.09% including the FX margin, which is at the corridor average [S15].</p>
+<p><strong>What the customer sees versus what Riverpe keeps.</strong> The sender pays €6.00 above the payout value and receives XOF 129,748 rather than the XOF 131,191 that €200 converts to at the reference rate. That gap — 1.10% — is FX margin and payout fee showing up as a worse rate. Disclosing it as a rate rather than a fee is legal, common, and the fastest way to lose a customer who checks; the recommendation is to quote the all-in percentage.</p>
+<h3 id="74-flows-separated">7.4 Flows, separated</h3>
+<table>
+<thead>
+<tr>
+<th>Flow</th>
+<th>Path</th>
+<th>Content</th>
+<th>Failure if broken</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transaction</strong></td>
+<td>Customer → F1 → Riverpe → B1 → P1 → beneficiary</td>
+<td>Payment instruction and status</td>
+<td>Double payment or lost payment; mitigated by idempotency keys and status-state machine</td>
+</tr>
+<tr>
+<td><strong>Funds</strong></td>
+<td>Customer bank → F1 → B1 → Riverpe XOF account → P1 → beneficiary wallet</td>
+<td>EUR then XOF</td>
+<td>Liquidity failure (§5.5)</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>Riverpe ↔ F1, B1, P1</td>
+<td>References, amounts, status, KYC attributes, screening results</td>
+<td>Reconciliation break; unresolved breaks become audit findings</td>
+</tr>
+<tr>
+<td><strong>Documents</strong></td>
+<td>Riverpe → B1</td>
+<td>Purpose of payment, underlying invoice or remittance details, payer and beneficiary identification</td>
+<td>RFE non-compliance; the bank can reject or suspend the flow [S4]</td>
+</tr>
+</tbody>
+</table>
+<h3 id="75-failure-scenarios-priced">7.5 Failure scenarios, priced</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Frequency (assumed)</th>
+<th>Customer impact</th>
+<th>Response</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provider timeout at payout</td>
+<td>1 in 500</td>
+<td>Delayed minutes</td>
+<td>Retry with idempotency key; status reconciled before any re-send</td>
+<td>Nil</td>
+</tr>
+<tr>
+<td>Wallet credit fails (wrong identifier)</td>
+<td>1 in 300</td>
+<td>Funds returned, sender notified</td>
+<td>Return to sender or hold for correction; never auto-retry</td>
+<td>Refund fee plus support time</td>
+</tr>
+<tr>
+<td>P1 balance exhausted</td>
+<td>Monthly at peak</td>
+<td>Payouts queue</td>
+<td>Top up; shift batch share to P2</td>
+<td>Float acceleration, ~0.05% of volume</td>
+</tr>
+<tr>
+<td>B1 misses cut-off</td>
+<td>Weekly if undisciplined</td>
+<td>One-day delay</td>
+<td>Hold batch; release next window</td>
+<td>One day of float</td>
+</tr>
+<tr>
+<td>FX rate unavailable</td>
+<td>Rare</td>
+<td>Quote withdrawn</td>
+<td>Pause new quotes; honour funded ones</td>
+<td>Reputational</td>
+</tr>
+<tr>
+<td>RFE documentation rejected</td>
+<td>Unknown, potentially 1 in 100</td>
+<td>Payment held for days</td>
+<td>Case-by-case with bank; documentation checklist tightened</td>
+<td>Support cost plus float extension</td>
+</tr>
+<tr>
+<td>Sanctions match</td>
+<td>Rare</td>
+<td>Payment blocked</td>
+<td>Compliance review; no automatic retry</td>
+<td>Regulatory reporting</td>
+</tr>
+</tbody>
+</table>
+<p>The RFE row is the one that is new in v4 and the one most likely to be underestimated. A documentation rejection is not a technical failure; it is a payment that sits in a bank while a customer waits, and it consumes float for as long as it sits.</p>
+<h3 id="76-what-working-looks-like-at-day-90">7.6 What "working" looks like at day 90</h3>
+<p>600 transactions/month, $120,000 payout volume, first-attempt success ≥92%, settlement inside the contracted cycle on 95% of batches, zero compliance incidents, two payout providers live, one approved intermediary contracted. That proves the corridor operates. §6 shows why it does not yet prove a business.</p>
+<hr>
+<h2 id="8-operational-and-settlement-architecture">8. Operational and Settlement Architecture</h2>
+<h3 id="81-the-principle-that-makes-the-rest-affordable">8.1 The principle that makes the rest affordable</h3>
+<p><strong>Adding a provider must be a configuration change, not a rewrite.</strong> Every provider sits behind one internal interface: quote, collect, payout, status, reconcile. If the second provider in a corridor requires a code change, the second corridor costs the same as the first and the redundancy in §7.1 is theoretical.</p>
+<h3 id="82-components">8.2 Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Function</th>
+<th>Build-or-buy</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Provider abstraction layer</strong></td>
+<td>Normalises collection and payout across F1, B1, P1, P2</td>
+<td>Build (thin)</td>
+<td>Converts partner redundancy from a promise into a switch</td>
+</tr>
+<tr>
+<td><strong>Ledger</strong></td>
+<td>Double-entry, per-corridor, per-currency accounts for float, receivables, payable-to-customer, revenue and each cost line</td>
+<td>Build</td>
+<td>Without it, "net contribution per $1,000" cannot be computed and §11 is decoration</td>
+</tr>
+<tr>
+<td><strong>State machine</strong></td>
+<td>Explicit states: quoted, collecting, collected, converted, settling, paid, failed, reversed</td>
+<td>Build</td>
+<td>Prevents the double-payment class of incident</td>
+</tr>
+<tr>
+<td><strong>Idempotency</strong></td>
+<td>Every instruction carries a key; re-sends are no-ops</td>
+<td>Build</td>
+<td>The single highest-value 40 lines in the system</td>
+</tr>
+<tr>
+<td><strong>Reconciliation engine</strong></td>
+<td>Three-way match, daily, with a break queue and ageing</td>
+<td>Build</td>
+<td>Detects partner errors before customers do</td>
+</tr>
+<tr>
+<td><strong>Sanctions and PEP screening</strong></td>
+<td>Screening at onboarding and per transaction, with audit trail</td>
+<td>Buy</td>
+<td>Cannot be improvised; evidence is required</td>
+</tr>
+<tr>
+<td><strong>Observability</strong></td>
+<td>Success rate, latency, float cover, break ageing, per-provider error codes</td>
+<td>Buy</td>
+<td>The five KPIs in §11 need a source</td>
+</tr>
+<tr>
+<td><strong>Document generation</strong></td>
+<td>RFE purpose codes and supporting documents per transfer</td>
+<td>Build</td>
+<td>Bank rejects are otherwise unmanageable at volume</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-settlement-architecture">8.3 Settlement architecture</h3>
+<p><code>EUR collection          Approved intermediary            XOF payout
+-----------------       ------------------------         -----------------
+F1 (PSD2, SEPA)  --&gt;    B1: FX + RFE declaration  --&gt;    Riverpe XOF account
+                        value date T+1                   |
+                                                         +--&gt; P1 (EP, PI-SPI) --&gt; wallets
+                                                         +--&gt; P2 (bank)        --&gt; accounts</code></p>
+<p><strong>Rules that keep it solvent.</strong></p>
+<ul>
+<li>Payout releases only against settled or covered balances. A receivable is not cover.</li>
+<li>The XOF account is the single source of truth for cover; no provider's dashboard is.</li>
+<li>Cut-off calendar is maintained as data, not folklore, including Ivorian and French public holidays.</li>
+<li>Every provider has a named operations contact and a stated escalation path, tested once before launch.</li>
+</ul>
+<h3 id="84-the-cut-off-calendar-problem">8.4 The cut-off calendar problem</h3>
+<p>Four calendars interact: French banking days (SEPA), the intermediary's correspondent cut-offs, WAEMU business days (RTGS and bank settlement), and the wallet networks, which do not close. On a Friday before a French public holiday, a payout can be funded by Riverpe for up to four days. That scenario should be modelled explicitly in the float, not discovered in the first month; it is the reason §5.1 sets the payout account at $30,000 rather than the $14,400 that two average days would imply.</p>
+<h3 id="85-data-and-records">8.5 Data and records</h3>
+<table>
+<thead>
+<tr>
+<th>Record</th>
+<th>Retention</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transaction and quote</td>
+<td>5 years minimum</td>
+<td>Regulatory and dispute</td>
+</tr>
+<tr>
+<td>KYC and screening result</td>
+<td>5 years minimum</td>
+<td>AML evidence</td>
+</tr>
+<tr>
+<td>RFE documentation</td>
+<td>5 years minimum</td>
+<td>Bank and regulator request</td>
+</tr>
+<tr>
+<td>Reconciliation breaks</td>
+<td>5 years</td>
+<td>Audit trail of resolution</td>
+</tr>
+<tr>
+<td>Provider rate cards and contracts</td>
+<td>Life of relationship plus 5 years</td>
+<td>Repricing and dispute</td>
+</tr>
+</tbody>
+</table>
+<h2 id="retention-periods-are-a-planning-assumption-based-on-common-aml-practice-not-a-verified-waemu-requirement-the-partners-compliance-officer-should-confirm-them-in-writing-before-launch">Retention periods are a <strong>planning assumption</strong> based on common AML practice, not a verified WAEMU requirement; the partner's compliance officer should confirm them in writing before launch.</h2>
+<h2 id="9-risk-management">9. Risk Management</h2>
+<h3 id="91-register">9.1 Register</h3>
+<p>Likelihood and impact are rated Low / Medium / High. "Residual" is the exposure after the stated mitigation, not after hope.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>L</th>
+<th>I</th>
+<th>Mitigation</th>
+<th>Owner</th>
+<th>Residual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Access failure</strong> — three providers cannot be reached or will not quote</td>
+<td>High</td>
+<td>High</td>
+<td>Run the 7-day sprint before any spend; fallback corridor named in advance (§4.4)</td>
+<td>Founder</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>RFE documentation rejection</strong> — payment held at the bank for missing or wrong documents</td>
+<td>Medium</td>
+<td>High</td>
+<td>Document checklist per purpose code; pre-clear two specimen transfers with the bank; support script for held payments</td>
+<td>Compliance + Ops</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Payout provider fails or de-risks the flow</strong></td>
+<td>Medium</td>
+<td>High</td>
+<td>Two live providers per corridor; contract termination notice; monthly review of provider exposure</td>
+<td>Partnerships</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Liquidity shortfall at month-end</strong></td>
+<td>Medium</td>
+<td>High</td>
+<td>Float sized to 1.8× peak; cover measured in days; throttle rule at 1 day (§5.5)</td>
+<td>Treasury</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Approved intermediary bank exits the relationship</strong></td>
+<td>Low</td>
+<td>High</td>
+<td>Second bank identified and pre-qualified; 90-day notice clause; no single-bank dependency beyond year one</td>
+<td>CEO</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>PI-SPI pricing or rules change again</strong></td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Price on the cross-border value, not the domestic leg; contractual right to reprice; monitor BCEAO circulars</td>
+<td>Strategy</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>FX margin compression</strong></td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Quote per transaction; measure realised margin against reference daily; reprice weekly</td>
+<td>Treasury</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>AML or sanctions failure</strong></td>
+<td>Low</td>
+<td>High</td>
+<td>Screening at onboarding and per transaction; independent audit before scale; no high-risk flows without written partner consent</td>
+<td>Compliance</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Peg parity change</strong></td>
+<td>Very low</td>
+<td>High</td>
+<td>Unhedgeable at this scale; limit float to days of volume; disclose to investors as tail risk</td>
+<td>CFO</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Fraud — account takeover, mule accounts, first-party</strong></td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Velocity limits by customer; device and behaviour checks; hold rules on new beneficiaries</td>
+<td>Risk</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>Concentration in one customer or partner</strong></td>
+<td>Medium</td>
+<td>Medium</td>
+<td>No customer above 25% of volume without a contract; no provider above 70%</td>
+<td>Commercial</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Key-person dependency</strong></td>
+<td>High</td>
+<td>Medium</td>
+<td>Treasury runbook written before launch; two people trained on reconciliation and escalation</td>
+<td>CEO</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>Regulatory transition</strong> — the EP regime is 12 months old and still bedding in</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Partner must confirm authorisation scope in writing; re-verify on the register quarterly</td>
+<td>Compliance</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<h3 id="92-the-three-risks-that-actually-decide-the-outcome">9.2 The three risks that actually decide the outcome</h3>
+<ol>
+<li><strong>Access (row 1).</strong> Everything in this document is contingent on it, and it is the one thing that cannot be bought, modelled or delegated. It is also cheap to test: seven days and a phone.</li>
+<li><strong>Documentation (row 2).</strong> The RFE regime is the least familiar part of this corridor and the most likely to generate a held payment. A held payment is a treasury event, a support event and a reputational event at the same time.</li>
+<li><strong>Pricing ceiling (rows 6 and 7).</strong> The domestic rail is capped at 0.8% and the corridor average is 4.05%. If both compress, the model in §6 moves to the conservative scenario, where break-even is $12m a month and the corridor is no longer a business.</li>
+</ol>
+<h3 id="93-what-is-not-in-this-register-deliberately">9.3 What is not in this register, deliberately</h3>
+<p>Operational risks that are fully controllable — staff turnover, supplier invoices, office leases — are excluded. A risk register that lists everything ranks nothing.</p>
+<hr>
+<h2 id="10-evidence-and-industry-validation">10. Evidence and Industry Validation</h2>
+<h3 id="101-statement-of-evidence-status">10.1 Statement of evidence status</h3>
+<p><strong>No direct industry interviews have been completed at the time of this assessment. The framework remains subject to primary market validation.</strong></p>
+<p>As of 20 November 2026 this document contains <strong>no customer interviews, no provider calls, no quoted rate cards, no bank confirmations and no regulatory pre-clearance</strong>. Every factual claim is secondary or primary <em>documentary</em> — a regulator instrument, a central-bank statistical release, an official register or a World Bank dataset — tagged in §14. The market scores in §3 are the author's judgement applied to those documents. They are not diligence.</p>
+<p>Stating this plainly is the point. A framework that implies conversations it did not have is worth less than one that says what it knows, and a reader who discovers the gap later discounts everything else in the document.</p>
+<h3 id="102-interview-register">10.2 Interview register</h3>
+<p>Empty by design. It must be filled before this document is used to commit to a corridor or to raise capital.</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Role</th>
+<th>Organisation type</th>
+<th>Market</th>
+<th>Subject</th>
+<th>What they said</th>
+<th>Effect on the plan</th>
+<th>Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="103-interviews-required-before-launch">10.3 Interviews required before launch</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Role</th>
+<th>Why this role</th>
+<th>The question that must be answered</th>
+<th>Needed by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Head of partnerships, local payout provider</td>
+<td>Owns the rate card and the float minimum</td>
+<td>What is your month-end cash-out success rate by wallet network?</td>
+<td>Week 1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Payments product lead, bank-led payout provider</td>
+<td>Owns cut-off and return handling</td>
+<td>Will you settle bank-account payouts same day, and what is your return policy?</td>
+<td>Week 1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Trade finance or correspondent banking, approved intermediary</td>
+<td>Controls the mandatory cross-border leg</td>
+<td>Will you act as approved intermediary for this flow, and what documents do you require per transfer?</td>
+<td>Week 2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Compliance officer, either local provider</td>
+<td>Can veto the corridor after launch</td>
+<td>What KYC do you require, and who performs screening?</td>
+<td>Week 2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>FX desk, approved intermediary</td>
+<td>Prices the conversion and the float</td>
+<td>What margin on EUR→XOF at $120k monthly, and what minimum balance?</td>
+<td>Week 2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Operations lead, a live remittance operator in the corridor</td>
+<td>Has already paid for the mistakes</td>
+<td>What broke in your first 90 days and what did it cost?</td>
+<td>Week 3</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Founder or CFO, 3-5 target business customers</td>
+<td>Confirms willingness to pay, not interest</td>
+<td>What do you pay per transfer today, all in, including the rate?</td>
+<td>Week 3</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Diaspora association representative or community agent network</td>
+<td>Explains how senders actually choose a provider</td>
+<td>What makes a sender switch, and what makes them switch back?</td>
+<td>Week 4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Minimum evidence bar before the corridor is committed:</strong> six completed conversations covering rows 1, 3 and 7, with a quoted rate card from at least two providers, a written indication from one approved intermediary that it will act, and one customer stating their current all-in cost. Until then, §6's figures are a model and §3's scores are a hypothesis.</p>
+<hr>
+<h2 id="11-five-decision-critical-kpis">11. Five Decision-Critical KPIs</h2>
+<p>v2 carried twelve metrics across four tables. Twelve numbers on a dashboard is a way of avoiding a decision. These five remain because each one can change what the company does next week.</p>
+<h3 id="111-the-five">11.1 The five</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Metric</th>
+<th>Definition</th>
+<th>Calculation</th>
+<th>Frequency</th>
+<th>Target</th>
+<th>Escalation threshold</th>
+<th>Decision it informs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Net contribution per $1,000 moved</strong></td>
+<td>What Riverpe keeps after all direct costs, per $1,000 of payout value</td>
+<td>(Gross revenue − direct costs) ÷ GTV × 1,000</td>
+<td>Monthly, weekly rolling</td>
+<td>≥ $12.00</td>
+<td>&lt; $9.00</td>
+<td>Whether to hold price, renegotiate fees, or stop expanding the corridor</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Payout success rate</strong></td>
+<td>Share of transactions credited to the beneficiary on first attempt within the contracted cycle</td>
+<td>Settled first attempt ÷ transactions submitted</td>
+<td>Daily</td>
+<td>≥ 92% pilot, ≥ 96% steady state</td>
+<td>&lt; 88%</td>
+<td>Whether to keep onboarding customers or shift volume to the second provider</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Days of float cover</strong></td>
+<td>How many peak-volume days the deployable float can fund</td>
+<td>Deployable float ÷ trailing 7-day peak daily payout</td>
+<td>Daily</td>
+<td>≥ 5 days</td>
+<td>&lt; 3 days</td>
+<td>Whether to top up, throttle intake, or stop new business</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Cost to serve per transaction</strong></td>
+<td>All-in direct cost of a settled transaction</td>
+<td>Total direct costs ÷ settled transactions</td>
+<td>Weekly</td>
+<td>≤ $3.60</td>
+<td>&gt; $4.20</td>
+<td>Whether the provider mix or the pricing is wrong</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Ageing reconciliation breaks</strong></td>
+<td>Value and count of unreconciled items older than 48 hours</td>
+<td>Open breaks &gt; 48h ÷ transactions in period</td>
+<td>Daily, reported weekly</td>
+<td>&lt; 0.5% of value</td>
+<td>&gt; 1.0% of value</td>
+<td>Whether to freeze payout and fix the pipe before volume grows</td>
+</tr>
+</tbody>
+</table>
+<h3 id="112-why-these-five-and-not-the-others">11.2 Why these five, and not the others</h3>
+<ul>
+<li><strong>Commercial performance:</strong> #1 measures what the business keeps, not what it bills. It is the only number that cannot be improved by moving volume around.</li>
+<li><strong>Transaction economics:</strong> #4 catches a provider mix that is quietly eroding margin before #1 shows it at month end.</li>
+<li><strong>Settlement reliability:</strong> #2 is the promise being sold. Everything else is a supporting metric.</li>
+<li><strong>Liquidity efficiency:</strong> #3 is the constraint that ends corridors (§5.5).</li>
+<li><strong>Operational risk:</strong> #5 is the leading indicator of a broken pipe; it moves before customers complain.</li>
+</ul>
+<h3 id="113-retired-from-v2">11.3 Retired from v2</h3>
+<table>
+<thead>
+<tr>
+<th>Retired metric</th>
+<th>Why it went</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of corridors</td>
+<td>Rewards announcing markets, not operating them</td>
+</tr>
+<tr>
+<td>Number of PSP partners signed</td>
+<td>Rewards signatures over settlement</td>
+</tr>
+<tr>
+<td>Monthly revenue</td>
+<td>Moves with volume and hides margin; replaced by #1</td>
+</tr>
+<tr>
+<td>Gross take rate</td>
+<td>Invites an argument the cost base settles; kept as an input, not a KPI</td>
+</tr>
+<tr>
+<td>API uptime</td>
+<td>Provider's obligation, not Riverpe's differentiator; covered by #2</td>
+</tr>
+<tr>
+<td>Customer NPS</td>
+<td>Meaningless below 500 customers, and lagging</td>
+</tr>
+<tr>
+<td>Onboarding time</td>
+<td>Operational hygiene, not a decision trigger at this stage</td>
+</tr>
+</tbody>
+</table>
+<h2 id="one-metric-was-added-rather-than-retired-ageing-reconciliation-breaks-v2-had-no-leading-indicator-of-operational-failure-which-is-why-its-failure-table-read-as-a-list-of-surprises">One metric was <strong>added</strong> rather than retired: ageing reconciliation breaks. v2 had no leading indicator of operational failure, which is why its failure table read as a list of surprises.</h2>
+<h2 id="12-implementation-roadmap">12. Implementation Roadmap</h2>
+<p>Capital figures are <strong>estimates</strong>; dates assume the access sprint starts on 23 November 2026.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Window</th>
+<th>Work</th>
+<th>Exit gate</th>
+<th>Capital committed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0. Access</strong></td>
+<td>Days 1-7</td>
+<td>Six-test sprint (§4.2) across Côte d'Ivoire and Brazil; register checks; refusals logged</td>
+<td>Written go/no-go per market</td>
+<td>$0</td>
+</tr>
+<tr>
+<td><strong>1. Structure</strong></td>
+<td>Days 8-30</td>
+<td>Contracts with F1, B1, P1; P2 in diligence; bank accounts opened; float facility agreed; RFE documentation checklist agreed with B1</td>
+<td>One bank confirmed as approved intermediary; two payout providers contracted; $60,000 float available</td>
+<td>$60,000 float + $10,000 legal</td>
+</tr>
+<tr>
+<td><strong>2. Build</strong></td>
+<td>Days 31-60</td>
+<td>Provider abstraction layer; ledger; state machine; reconciliation; screening integration; cut-off calendar</td>
+<td>Sandbox-to-production in under a week per provider; reconciliation balances for 5 consecutive days</td>
+<td>$25,000 build (or founder time)</td>
+</tr>
+<tr>
+<td><strong>3. Pilot</strong></td>
+<td>Days 61-90</td>
+<td>3-5 customers, controlled volume, manual review of every exception; failure taxonomy started</td>
+<td>Success ≥92%; float cover ≥5 days; zero compliance incidents</td>
+<td>$18,000/month opex</td>
+</tr>
+<tr>
+<td><strong>4. Prove</strong></td>
+<td>Days 91-180</td>
+<td>Volume to $400,000/month; third provider signed; pricing tested at 3.5-4.0%; second bank qualified</td>
+<td>Net contribution ≥$12 per $1,000; success ≥95%</td>
+<td>$54,000 opex + float top-up</td>
+</tr>
+<tr>
+<td><strong>5. Decide</strong></td>
+<td>Days 181-365</td>
+<td>Either scale to $1.5m/month and open corridor two, or stop and return the float</td>
+<td>Break-even path in writing, or an orderly wind-down</td>
+<td>Case-dependent</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sequencing rules.</strong> One corridor at a time until net contribution per $1,000 is above target for two consecutive months. The abstraction layer is not optional, and it is not a phase-two item: built later, it is a rewrite. No customer is promised a payout date before the provider's authorisation has been checked against the register and the bank has confirmed the flow in writing.</p>
+<hr>
+<h2 id="13-outstanding-assumptions-and-research-gaps">13. Outstanding Assumptions and Research Gaps</h2>
+<p>Every row is something a reader should not assume. Nothing in this section is hidden elsewhere in the document.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Gap</th>
+<th>Why it matters</th>
+<th>How it gets resolved</th>
+<th>By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>No provider has been approached</strong></td>
+<td>All access claims are conditional</td>
+<td>Run §4.2</td>
+<td>30 Nov 2026</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>No rate card quoted</strong></td>
+<td>Every fee in §6 is an assumption</td>
+<td>Replace line by line after the sprint</td>
+<td>30 Nov 2026</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>No approved intermediary has confirmed the flow</strong></td>
+<td>Without it the corridor cannot legally operate</td>
+<td>Written indication from one bank</td>
+<td>15 Dec 2026</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>RFE documentation burden unquantified</strong></td>
+<td>Drives support cost and float held in transit</td>
+<td>Two specimen transfers cleared end to end</td>
+<td>15 Dec 2026</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Corridor volume split unknown</strong></td>
+<td>Commercial opportunity scored on price, not observed flow</td>
+<td>Request corridor-level data from providers; BCEAO balance of payments detail</td>
+<td>Q1 2027</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Peak factor 1.8× is assumed</strong></td>
+<td>Sets the float and the cover threshold</td>
+<td>Replace with observed daily seasonality after 60 days of volume</td>
+<td>Day 150</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Fixed cost $18,000/month is a plan</strong></td>
+<td>Drives every break-even number</td>
+<td>Build the actual cost base before the pilot</td>
+<td>Day 30</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Direct licence timing and cost not verified</strong></td>
+<td>Determines whether year two is partner-carried or own-licence</td>
+<td>Written timeline from BCEAO or counsel</td>
+<td>Q1 2027</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Brazil corridor pricing not researched</strong></td>
+<td>Fallback economics are unquantified</td>
+<td>Corridor study using RPW and BACEN data</td>
+<td>Q1 2027</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Botswana and Malawi regulatory positions not read</strong></td>
+<td>Scores rest on secondary description</td>
+<td>Read the primary instruments if either becomes relevant</td>
+<td>If promoted</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>PI-SPI participation obligations for foreign-owned providers</strong></td>
+<td>Could add a connection requirement and cost</td>
+<td>Confirm with BCEAO or a licensed participant</td>
+<td>15 Dec 2026</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Retention periods assumed at 5 years</strong></td>
+<td>Compliance cost and storage design</td>
+<td>Confirm with partner compliance</td>
+<td>15 Dec 2026</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>No customer willingness-to-pay evidence</strong></td>
+<td>Pricing is benchmarked, not tested</td>
+<td>Interviews 7 and 8 in §10.3</td>
+<td>18 Dec 2026</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>Peg risk treated as unhedgeable</strong></td>
+<td>A parity event would be absorbed, not hedged</td>
+<td>Accept and disclose; no instrument exists at this scale</td>
+<td>Standing</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="14-sources-and-references">14. Sources and References</h2>
+<p>All URLs accessed <strong>20 November 2026</strong>. Where a source is a secondary report of a primary instrument, it is labelled and the primary instrument is named so it can be checked.</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Organisation</th>
+<th>Document</th>
+<th>Published</th>
+<th>URL</th>
+<th>What it is used for</th>
+<th>Limitations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S1</strong></td>
+<td>BCEAO</td>
+<td>Instruction n°001-01-2024 relative aux services de paiement dans l'UMOA</td>
+<td>23 Jan 2024</td>
+<td><a href="https://www.bceao.int/sites/default/files/2024-02/Instruction%20N%C2%B0001-01-2024%20relative%20aux%20services%20de%20paiement%20dans%20l%27UMOA%20%20ok.pdf">bceao.int</a></td>
+<td>Payment institution regime; tiered minimum capital (XOF 10m / 20m / 30m / 100m)</td>
+<td>French only; capital tiers depend on the licensed service set, which the register does not publish per entity</td>
+</tr>
+<tr>
+<td><strong>S2</strong></td>
+<td>BCEAO / Direction Générale du Trésor (CI)</td>
+<td>Register of authorised payment establishments in UMOA, position at 28 Feb 2026</td>
+<td>Mar 2026</td>
+<td><a href="https://www.bceao.int/sites/default/files/2026-03/LISTE%20DES%20ETABLISSEMENTS%20DE%20PAIEMENT%20AGR%C3%89%C3%89S%20DANS%20L%E2%80%99UMOA%20au%2031%20janvier%202026.pdf">bceao.int</a></td>
+<td>31 authorised EPs union-wide, 9 in Côte d'Ivoire, first authorisations May-Sep 2025</td>
+<td>File name references the January 2026 list while the content is dated 28 Feb 2026; per-entity licence scope is not shown</td>
+</tr>
+<tr>
+<td><strong>S2b</strong></td>
+<td>Direction Générale du Trésor (CI)</td>
+<td>"La BCEAO agrée 31 nouveaux établissements dont 09 en Côte d'Ivoire"</td>
+<td>19 Mar 2026</td>
+<td><a href="https://tresor.gouv.ci/tres/espace-uemoa-monnaie-electronique-la-bceao-agree-31-nouveaux-etablissements-dont-09-en-cote-divoire">tresor.gouv.ci</a></td>
+<td>Corroborates the EP count and the legal basis</td>
+<td>Government news item, not the register itself</td>
+</tr>
+<tr>
+<td><strong>S3</strong></td>
+<td>BCEAO</td>
+<td>Instruction n°008-05-2015 (e-money issuers) and BCEAO FAQ on who may issue e-money</td>
+<td>21 May 2015; FAQ 9 Sep 2026</td>
+<td><a href="https://www.bceao.int/fr/documents/qui-peut-emettre-de-la-monnaie-electronique-dans-luemoa-ou-lun-de-ses-etats-membres">bceao.int</a></td>
+<td>EME minimum capital XOF 300m, fully paid before authorisation</td>
+<td>The named EME register has not been published since 2017; entity-level confirmation requires the partner</td>
+</tr>
+<tr>
+<td><strong>S4</strong></td>
+<td>UEMOA Council of Ministers / BCEAO</td>
+<td>Règlement n°06/2024/CM/UEMOA relatif aux relations financières extérieures</td>
+<td>20 Dec 2024 (published 29 Jul 2025)</td>
+<td><a href="https://www.bceao.int/fr/reglementations/reglement-ndeg062024cmuemoa-relatif-aux-relations-financieres-exterieures-des-etats">bceao.int</a></td>
+<td>Approved-intermediary requirement; art. 26 bars EPs and EMIs from originating payments abroad</td>
+<td>Does not set per-transfer documentation for a given purpose code; that is bank practice</td>
+</tr>
+<tr>
+<td><strong>S5</strong></td>
+<td>BCEAO / Commission Bancaire de l'UMOA</td>
+<td>Instruction n°01/07/2025/RFE on execution of settlements with non-residents</td>
+<td>1 Aug 2025</td>
+<td><a href="https://cb-umoa.org/sites/default/files/2025-08/Instruction%20n%C2%B0%2001%2007%202025%20RFE%20relative%20%C3%A0%20l%27ex%C3%A9cution%20des%20r%C3%A8glements%20%C3%A0%20destination%20ou%20en%20provenance%20de%20l%27%C3%A9tranger%20ou%20avec%20des%20non-r%C3%A9sidents.pdf">cb-umoa.org</a></td>
+<td>Transfer request procedure through approved intermediaries; annual list of intermediaries</td>
+<td>Operational turnaround for a transfer request is not published</td>
+</tr>
+<tr>
+<td><strong>S6</strong></td>
+<td>BCEAO, reported by Ecofin Agency</td>
+<td>PI-SPI tariff revision effective 2 Nov 2026: free ≤ XOF 8,000/day, cap 0-0.8% above, receiving free, UEMOA cross-border parity 1 Jun 2027</td>
+<td>5 Oct 2026</td>
+<td><a href="https://www.ecofinagency.com/news/0510-59448-from-free-transfers-to-cfaf-8-000-bceao-reworks-its-instant-payment-promise">ecofinagency.com</a></td>
+<td>Domestic payout price ceiling; regional reference price</td>
+<td><strong>Secondary.</strong> The BCEAO communiqué itself was not read; figures corroborated by several outlets</td>
+</tr>
+<tr>
+<td><strong>S7</strong></td>
+<td>BCEAO, reported by Linfodrome</td>
+<td>PI-SPI: 175 participants, 38m+ users; free tier covers 75% of e-money transactions</td>
+<td>4 Oct 2026</td>
+<td><a href="https://www.linfodrome.com/economie/126097-mobile-money-les-petits-transferts-d-argent-gratuits-des-le-2-novembre">linfodrome.com</a></td>
+<td>Platform scale and reach</td>
+<td><strong>Secondary.</strong> Participant count is a point-in-time figure</td>
+</tr>
+<tr>
+<td><strong>S8</strong></td>
+<td>Banco Central do Brasil</td>
+<td>Principles for Financial Market Infrastructures — SPI disclosure</td>
+<td>11 Feb 2026</td>
+<td><a href="https://www.bcb.gov.br/content/estabilidadefinanceira/sistemapagamentosinstantaneos_docs/principios_infraestruturas_mercado_financeiro.pdf">bcb.gov.br</a></td>
+<td>SPI settles in central-bank money, RTGS, 24/7, irrevocable, no overdrafts</td>
+<td>Describes infrastructure, not commercial pricing</td>
+</tr>
+<tr>
+<td><strong>S9</strong></td>
+<td>Banco Central do Brasil</td>
+<td>Retail payment statistics, H1 2026 (nota 21300)</td>
+<td>Oct 2026</td>
+<td><a href="https://www.bcb.gov.br/api/servico/sitebcb/notasImprensa/21300">bcb.gov.br</a></td>
+<td>79.7bn transactions; PIX 55.2% of count and ~44bn transactions</td>
+<td>Excludes cash payments other than withdrawals; PIX value share differs from count share</td>
+</tr>
+<tr>
+<td><strong>S10</strong></td>
+<td>Banco Central do Brasil</td>
+<td>Exchange-market regulation portal (consolidated FX framework)</td>
+<td>Current</td>
+<td><a href="https://www.bcb.gov.br/estabilidadefinanceira/mercadocambial">bcb.gov.br</a></td>
+<td>Basis for the statement that cross-border FX requires an authorised institution</td>
+<td><strong>Not read in detail for this version - pending validation</strong></td>
+</tr>
+<tr>
+<td><strong>S11</strong></td>
+<td>Bank of Botswana</td>
+<td>Payment services licensing framework</td>
+<td>Current</td>
+<td>—</td>
+<td>Botswana eligibility</td>
+<td><strong>Not read for this version - pending validation</strong></td>
+</tr>
+<tr>
+<td><strong>S12</strong></td>
+<td>Reserve Bank of Malawi</td>
+<td>Payment services licensing framework</td>
+<td>Current</td>
+<td>—</td>
+<td>Malawi eligibility</td>
+<td><strong>Not read for this version - pending validation</strong></td>
+</tr>
+<tr>
+<td><strong>S13</strong></td>
+<td>World Bank</td>
+<td>World Development Indicators — DRC population and GDP per capita</td>
+<td>Data year 2025</td>
+<td><a href="https://data.worldbank.org/country/congo-dem-rep">data.worldbank.org</a></td>
+<td>112.8m population; $806.8 GDP per capita</td>
+<td>Estimates subject to revision; GDP per capita sensitive to exchange-rate conversion</td>
+</tr>
+<tr>
+<td><strong>S14</strong></td>
+<td>BCEAO</td>
+<td>UMOA monetary cooperation; EUR/XOF parity 655.957, no band; convertibility via the French Treasury operating account</td>
+<td>Institutional constant</td>
+<td><a href="https://www.bceao.int">bceao.int</a></td>
+<td>The corridor's FX and convertibility profile</td>
+<td>Parity is a treaty arrangement, not a market outcome; a parity change is a tail risk, not a modelled scenario</td>
+</tr>
+<tr>
+<td><strong>S15</strong></td>
+<td>World Bank</td>
+<td>Remittance Prices Worldwide — corridor France → Côte d'Ivoire</td>
+<td>Q3 2025 (collected 24 Jul-2 Sep 2025)</td>
+<td><a href="https://remittanceprices.worldbank.org/corridor/France/C%C3%B4te%20d%E2%80%99Ivoire">remittanceprices.worldbank.org</a></td>
+<td>Corridor average total cost 4.05%; fee EUR 5.19; FX margin 0.34%; total cost EUR 5.66; cheapest transparent quote 2.46%</td>
+<td><strong>Samples EUR 140 and EUR 345, not EUR 200</strong>; excludes non-transparent services; bank and MTO mix varies by quarter</td>
+</tr>
+<tr>
+<td><strong>S16</strong></td>
+<td>World Bank</td>
+<td>Remittance Prices Worldwide, main report and annex Q3 2025</td>
+<td>Apr 2026</td>
+<td><a href="https://remittanceprices.worldbank.org/sites/default/files/2026-04/RPW_main_report_and_annex_Q325.pdf">remittanceprices.worldbank.org</a></td>
+<td>SSA average cost to send $200: 8.46%; digital-only MTO benchmark 3.54%</td>
+<td>Regional averages mask wide corridor variation; the digital benchmark is a sub-index, not a guarantee of achievable pricing</td>
+</tr>
+<tr>
+<td><strong>S17</strong></td>
+<td>World Bank / IMF balance of payments</td>
+<td>Personal remittances received, Côte d'Ivoire (WDI series BX.TRF.PWKR.CD.DT)</td>
+<td>Series updated 11 Nov 2026; data year 2024</td>
+<td><a href="https://api.worldbank.org/v2/country/CIV/indicator/BX.TRF.PWKR.CD.DT?date=2023:2024&amp;format=json">World Bank API</a></td>
+<td>$1.77bn received in 2024; $1.31bn in 2023</td>
+<td>National total, not corridor-specific; revised annually; understates informal flows</td>
+</tr>
+<tr>
+<td><strong>S18</strong></td>
+<td>European Union</td>
+<td>Regulation (EU) 2024/886 on instant credit transfers in euro; Commission announcement of 9 Oct 2025</td>
+<td>13 Mar 2024; 9 Oct 2025</td>
+<td><a href="https://eur-lex.europa.eu/eli/reg/2024/886/oj/eng">eur-lex.europa.eu</a></td>
+<td>Instant euro payments mandatory for euro-area banks; charge parity with standard transfers; free payee verification</td>
+<td>Applies to euro-area banks from the stated dates; payment institutions have later deadlines (2027)</td>
+</tr>
+<tr>
+<td><strong>S19</strong></td>
+<td>European Payments Council</td>
+<td>SEPA Credit Transfer Scheme Rulebook 2025, version 1.1</td>
+<td>5 Oct 2025</td>
+<td><a href="https://www.europeanpaymentscouncil.eu/sites/default/files/kb/file/2025-09/EPC125-05%202025%20SCT%20Rulebook%20version%201.1.pdf">europeanpaymentscouncil.eu</a></td>
+<td>Maximum execution time of one banking business day after receipt</td>
+<td>Cut-off times are out of scope of the rulebook and set by each provider</td>
+</tr>
+<tr>
+<td><strong>S20</strong></td>
+<td>—</td>
+<td>Bank value dating and cut-off practice for EUR→XOF settlement</td>
+<td>—</td>
+<td>—</td>
+<td>Timing assumption in §5.3 and §7.2</td>
+<td><strong>Assumption.</strong> Must be replaced with a quoted cut-off and value-date schedule from the approved intermediary</td>
+</tr>
+</tbody>
+</table>
+<h3 id="141-withdrawn-or-corrected-claims">14.1 Withdrawn or corrected claims</h3>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Origin</th>
+<th>Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ivory Coast 4.2, Brazil 3.8, DRC 2.8, Botswana 1.9, Malawi 1.8</td>
+<td>v2</td>
+<td>Withdrawn. No method, no inputs. Replaced by the eight-criterion scored model in §3</td>
+</tr>
+<tr>
+<td>"Regulatory clarity" at 15% of market score</td>
+<td>v2</td>
+<td>Removed. Regulation is a gate (§2)</td>
+</tr>
+<tr>
+<td>Orange 45%, MTN 30%, Wave 20%, "Free Money" 5%</td>
+<td>v2</td>
+<td>Withdrawn. "Free" is not an operator in Côte d'Ivoire; the fourth is Moov. Wave's share was materially understated</td>
+</tr>
+<tr>
+<td>PIX "60%+ of digital payments"</td>
+<td>v2</td>
+<td>Withdrawn. Correct figure: 55.2% of all payment transactions in H1 2026 [S9]</td>
+</tr>
+<tr>
+<td>"Card penetration ~5%" in Côte d'Ivoire</td>
+<td>v2</td>
+<td>Withdrawn as unsourced</td>
+</tr>
+<tr>
+<td>"$5B+ monthly P2P crypto in Africa/LatAm"</td>
+<td>v2</td>
+<td>Withdrawn as unsourced and unverifiable as stated</td>
+</tr>
+<tr>
+<td>"Gambling industry $2B+ annual in emerging markets"</td>
+<td>v2</td>
+<td>Withdrawn as unsourced</td>
+</tr>
+<tr>
+<td>"Emerging market rails command 1.5-4% take rates"</td>
+<td>v2</td>
+<td>Replaced by measured corridor cost (4.05%) and SSA/digital benchmarks [S15, S16]</td>
+</tr>
+<tr>
+<td>"~90% of DRC transactions are cash"</td>
+<td>v2</td>
+<td>Withdrawn as a number; retained as a qualitative description only</td>
+</tr>
+<tr>
+<td>"DRC ~100M population"</td>
+<td>v2</td>
+<td>Corrected to 112.8m [S13]</td>
+</tr>
+<tr>
+<td>105-point "100-point" scorecard</td>
+<td>v2</td>
+<td>Corrected to a 100-point card with Scalability inside Technical Capability</td>
+</tr>
+<tr>
+<td>Liquidity failure → "retry on backup PSP"</td>
+<td>v2</td>
+<td>Reclassified as a treasury event with owners (§5.5)</td>
+</tr>
+<tr>
+<td>"IC → France (remittance)"</td>
+<td>v2</td>
+<td>Direction reversed: funded in France, paid out in Côte d'Ivoire</td>
+</tr>
+<tr>
+<td>Pilot success "&gt;95%" vs KPI "&gt;90%"</td>
+<td>v2</td>
+<td>Contradiction resolved: ≥92% pilot, ≥96% steady state (§11)</td>
+</tr>
+<tr>
+<td>"Partner-only licence path; no licence needed at the gate"</td>
+<td>v3</td>
+<td><strong>Partly corrected.</strong> A Riverpe licence is not needed to start, but EPs and EMIs may not originate payments abroad, so an approved intermediary bank is mandatory in the settlement position [S4]. This adds a counterparty and raises minimum float</td>
+</tr>
+<tr>
+<td>Minimum float $50,000</td>
+<td>v3</td>
+<td><strong>Revised to ~$57,000 (plan $60,000).</strong> The bank operating balance and the three-day weekend gap were both missing</td>
+</tr>
+<tr>
+<td>Payout fee "0.9-1.3% plus flat charge"</td>
+<td>v3</td>
+<td>Revised downward to 0.85% blended, reflecting the PI-SPI price ceiling [S6]; still an assumption</td>
+</tr>
+<tr>
+<td>Unit economics: 1.58% net</td>
+<td>v3</td>
+<td><strong>Revised to 1.24%.</strong> v3 omitted the funding-side collection fee; adding it raises cost per transaction from $2.84 to $3.52</td>
+</tr>
+<tr>
+<td>Break-even $1.14m/month</td>
+<td>v3</td>
+<td><strong>Revised to $1.45m/month</strong> as a consequence of the collection-fee correction</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="appendix-a-quality-control-self-assessment">Appendix A. Quality-control self-assessment</h2>
+<p>The ten questions a reader will ask, answered against this document rather than against its intentions.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Answer</th>
+<th>Where it is weakest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Can an investor see how the business earns money?</td>
+<td>Yes: take rate on payout value, with each cost line and break-even volume (§6)</td>
+<td>The take rate is benchmarked, not tested with customers</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Can a provider see what is being proposed?</td>
+<td>Yes: four named positions, volume expectations, settlement and float requirements (§7.1)</td>
+<td>No provider has been asked whether they want it</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Can a treasury professional see the liquidity requirement?</td>
+<td>Yes: component build-up, ten-day model, cover metric, escalation ladder (§5)</td>
+<td>Peak factor is assumed, not observed</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Can an operations executive see how payments move?</td>
+<td>Yes: ten-step lifecycle with timings and owners, plus failure scenarios (§7.2, §7.5)</td>
+<td>Cut-offs and value dates are assumptions pending bank confirmation</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Can a compliance professional identify the obligations?</td>
+<td>Yes: RFE documentation, approved intermediary, licensing, screening (§2, §7.4)</td>
+<td>Per-purpose documentation is bank practice and unverified</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Can another analyst reproduce the scores?</td>
+<td>Yes: weights, anchors, per-criterion inputs and contributions for every market (§3)</td>
+<td>Four criteria rest on judgement, and the Brazil-CI gap is inside the error bars</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Can the corridor realistically be executed?</td>
+<td>Conditionally: the legal structure and float are specified and affordable</td>
+<td>Access is untested, which is the whole of §4.1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Are the financial assumptions defensible?</td>
+<td>Mostly: each is ranged, labelled and tied to a benchmark</td>
+<td>No quoted rate card exists; the conservative case does not break even at plausible pilot volume</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Is every material claim supported?</td>
+<td>Documentary claims yes; commercial claims no, and they are labelled</td>
+<td>No primary interviews (§10)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Are the gaps acknowledged?</td>
+<td>Yes: fourteen explicit gaps with closure dates (§13)</td>
+<td>Closure depends on third parties responding</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The honest summary.</strong> This is a well-evidenced <em>plan</em> and an unvalidated <em>business</em>. The regulatory, settlement and pricing structure now rests on primary instruments; the partner relationships, quoted fees and customer demand do not exist yet. The next seven days of outreach are worth more than the next seven drafts.</p>
+<hr>
+<p><em>Riverpe Framework v4 - 20 November 2026. Supersedes v3. All figures are sourced, ranged, or labelled as assumptions; the interview register in §10 is empty and says so.</em></p>
+</div>
+</body>
+</html>
