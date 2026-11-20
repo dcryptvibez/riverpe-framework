@@ -142,7 +142,8 @@
 <p><strong>Status:</strong> completed framework, v4. Supersedes v3 (20 November 2026) and v2 (August 2026).
 <strong>Prepared for:</strong> Riverpe founding team, prospective banking partners and institutional investors.
 <strong>Author:</strong> candidate for Head of Growth Operations / Partnerships / Market Expansion.
-<strong>Document date:</strong> 20 November 2026. <strong>All sources accessed 20 November 2026.</strong></p>
+<strong>Document date:</strong> 20 November 2026. <strong>All sources accessed 20 November 2026.</strong>
+<strong>Scope this cycle:</strong> WAEMU (Côte d'Ivoire pilot) plus Brazil. Lagos and Nairobi are <strong>not scored</strong> in §3 — they are deferred pending primary CBN and CBK sources. That is a scope decision, not an oversight, and §13 gap 15 records the test that would bring them in.</p>
 <hr>
 <h2 id="executive-summary">Executive Summary</h2>
 <p>Riverpe proposes to run a small number of payment corridors as a supply business: licensed counterparties, funded balances, settled obligations. Revenue comes from a take rate on cross-border payout. The binding constraint is float, not demand.</p>
@@ -1258,7 +1259,7 @@ Beneficiary wallet or bank account (XOF)</code></p>
 </table>
 <p><strong>Cover is measured in days, not currency.</strong> Cover = deployable float ÷ trailing 7-day peak daily payout. Using the average instead of the peak is the most common way a corridor that "looked funded" fails at month-end.</p>
 <h3 id="56-illustrative-treasury-model-10-business-days-at-pilot-volume">5.6 Illustrative treasury model — 10 business days at pilot volume</h3>
-<p>Opening payout-account balance $50,000. Payouts $4,000/day, $7,200 on days 6-7 (month-end). Collections reimburse two days later.</p>
+<p>Opening payout-account balance <strong>$60,000</strong> (the plan float, §5.3). Payouts $4,000/day, $7,200 on days 6-7 (month-end). Collections reimburse two days later.</p>
 <table>
 <thead>
 <tr>
@@ -1274,75 +1275,76 @@ Beneficiary wallet or bank account (XOF)</code></p>
 <td>1</td>
 <td>4,000</td>
 <td>0</td>
-<td>46,000</td>
-<td>6.4</td>
+<td>56,000</td>
+<td>7.8</td>
 </tr>
 <tr>
 <td>2</td>
 <td>4,000</td>
 <td>0</td>
-<td>42,000</td>
-<td>5.8</td>
+<td>52,000</td>
+<td>7.2</td>
 </tr>
 <tr>
 <td>3</td>
 <td>4,000</td>
 <td>4,000</td>
-<td>42,000</td>
-<td>5.8</td>
+<td>52,000</td>
+<td>7.2</td>
 </tr>
 <tr>
 <td>4</td>
 <td>4,000</td>
 <td>4,000</td>
-<td>42,000</td>
-<td>5.8</td>
+<td>52,000</td>
+<td>7.2</td>
 </tr>
 <tr>
 <td>5</td>
 <td>4,000</td>
 <td>4,000</td>
-<td>42,000</td>
-<td>5.8</td>
+<td>52,000</td>
+<td>7.2</td>
 </tr>
 <tr>
 <td>6</td>
 <td>7,200</td>
 <td>4,000</td>
-<td>38,800</td>
-<td>5.4</td>
+<td>48,800</td>
+<td>6.8</td>
 </tr>
 <tr>
 <td>7</td>
 <td>7,200</td>
 <td>4,000</td>
-<td>35,600</td>
-<td>4.9</td>
+<td>45,600</td>
+<td>6.3</td>
 </tr>
 <tr>
 <td>8</td>
 <td>4,000</td>
 <td>7,200</td>
-<td>38,800</td>
-<td>5.4</td>
+<td>48,800</td>
+<td>6.8</td>
 </tr>
 <tr>
 <td>9</td>
 <td>4,000</td>
 <td>7,200</td>
-<td>42,000</td>
-<td>5.8</td>
+<td>52,000</td>
+<td>7.2</td>
 </tr>
 <tr>
 <td>10</td>
 <td>4,000</td>
 <td>4,000</td>
-<td>42,000</td>
-<td>5.8</td>
+<td>52,000</td>
+<td>7.2</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Trough: $35,600 on day 7.</strong> Maximum cumulative deficit is $14,400 (2 × $7,200), which is why the account needs $30,000 rather than $15,000: the deficit plus a weekend extension plus headroom. Everything in this table is an <strong>estimate</strong> built on assumed volume and an assumed 1.8× peak factor. The shape is robust; the numbers are not yet observed.</p>
+<p><strong>Trough: $45,600 on day 7 — 6.3 days of peak cover, above the ≥5-day target in §11.</strong> Maximum cumulative deficit is $14,400 (2 × $7,200): the deficit plus a weekend extension plus headroom is what sets the bank operating balance near $30,000.</p>
+<p><strong>The table is sensitive to the opening balance, and that is the point.</strong> Run the identical schedule at the $50,000 assumed in v3 and the trough is $35,600 — 4.9 days, which <em>fails</em> the §11 target. That failure is the reason the minimum was raised: $57,000 gives 5.9 days, $60,000 gives 6.3. The number to defend is therefore the opening balance, not the shape of the schedule. Everything here is an <strong>estimate</strong> built on assumed volume and an assumed 1.8× peak factor; the shape is robust, the numbers are not yet observed.</p>
 <hr>
 <h2 id="6-unit-economics-and-financial-model">6. Unit Economics and Financial Model</h2>
 <p>All figures are <strong>modelled planning numbers built from labelled assumptions</strong>, not quoted rates. They exist to be replaced line by line with a rate card from §4.</p>
@@ -1992,7 +1994,55 @@ Beneficiary wallet or bank account (XOF)</code></p>
 </tbody>
 </table>
 <p>The RFE row is the one that is new in v4 and the one most likely to be underestimated. A documentation rejection is not a technical failure; it is a payment that sits in a bank while a customer waits, and it consumes float for as long as it sits.</p>
-<h3 id="76-what-working-looks-like-at-day-90">7.6 What "working" looks like at day 90</h3>
+<h3 id="76-who-already-serves-this-corridor-and-why-a-payer-switches">7.6 Who already serves this corridor, and why a payer switches</h3>
+<p>A corridor argument that does not name the incumbents is a plan, not a proposition. This subsection names them, states what each one does badly, and states what would have to be true for a payer to move — <strong>and it is explicit that the last part is untested.</strong> §10 gap 13 still stands: there is no willingness-to-pay interview behind any of it.</p>
+<p>The published quotes below were collected in November 2026 on the France → Côte d'Ivoire route for a €100 send. They are <strong>secondary comparators</strong>, listed in §14 as S21-S23; the primary anchor remains the World Bank corridor average of 4.05% for EUR 140/345 tickets [S15].</p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Position in the corridor</th>
+<th>Published cost, €100 (Nov 2026)</th>
+<th>Segment it serves badly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Western Union</strong></td>
+<td>Cheapest measured quote; agent network plus mobile and bank payout</td>
+<td>€0.99, about 0.99% all-in, ~24h [S21]. FX margin quoted at 2-4% on other ticket sizes [S22]</td>
+<td>Pricing is opaque away from the headline ticket, cash-first in practice, and no per-invoice reference comes out of it. A business cannot reconcile a payroll or supplier run from agent receipts</td>
+</tr>
+<tr>
+<td><strong>Remitly</strong></td>
+<td>Deepest wallet integration: Wave, Orange Money, MTN MoMo, Moov, plus banks including Banque Atlantique, BHCI, NSIA, Orabank and BDU-CI</td>
+<td>Tiered €2.99 below €100, €5.99 for €100-199, rising to €18.99; Express in minutes, Economy 3-5 days [S22]</td>
+<td>Built for consumers sending to family. The fee scales with ticket size, so batch business payout becomes the most expensive option on the route, and nothing in the product produces RFE documentation</td>
+</tr>
+<tr>
+<td><strong>Orange Money Europe</strong></td>
+<td>The network itself: 40,000+ Orange Money points plus MTN MoMo and Moov</td>
+<td>€1.99 up to €100, €2.99 above [S22]</td>
+<td>Wallet-only. It cannot credit a supplier's bank account, and as the incumbent issuer it has no commercial reason to make an intermediary's repeat payout cheap</td>
+</tr>
+<tr>
+<td><em>Bank SWIFT (baseline)</em></td>
+<td>Correspondent route to a local bank account</td>
+<td>€15-50 fixed plus FX commission, 3-5 business days [S22]</td>
+<td>The only option that reaches a corporate bank account with advice — and the one that gives no committed value date, no invoice-level reference and no visibility while the payment sits</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The uncomfortable read of these numbers.</strong> At €100 the consumer route is already priced at 0.99-1.85%. A 3.00% retail product does not beat that and should not try. The 3.00% take rate in §6 only survives where <strong>the alternative is a bank transfer, not a remittance app</strong>: at €1,000 the recorded range across eight providers widens to 0.1-3.8% [S23], SWIFT still costs €15-50 fixed plus FX and takes 3-5 days, and the payer has a supplier or a payroll at the other end.</p>
+<p><strong>Why a payer moves at 3.00%</strong> (and at the 3.50% the model can justify when reliability is demonstrable). Three mechanisms, each of which is falsifiable:</p>
+<ol>
+<li><strong>A credit advice with a reference, not a wallet top-up.</strong> A supplier needs to match the payment to an invoice. Consumer apps pay wallets and return a receipt; they do not return a remittance reference a finance team can post against.</li>
+<li><strong>A contracted settlement date.</strong> SWIFT's 3-5 days with an uncommitted value date is the real competitor, and the cost of a late supplier payment — penalty, halted goods, a broken credit term — is larger than the 3% fee. Certainty is what is being bought.</li>
+<li><strong>Documentation the payer cannot staff.</strong> Every cross-border leg needs an RFE documentation pack through an approved intermediary [S4, S5]. That is per-transfer work most small importers do not have a person for, and it is the part they will pay a margin to hand over.</li>
+</ol>
+<p><strong>What this paragraph changes, and what it does not.</strong> It changes the target customer, not the arithmetic: the buyer is a business sending €500-5,000 to a supplier bank account, not a consumer sending €100 to a wallet. It does not supply evidence. The test is interview 7 in §10.3 — ask what the payer spends all-in today on a supplier payment and whether there is a payment they currently refuse to send. If the answer is a €100 wallet top-up, 3.00% is dead on arrival against a 0.99% market. If it is a €2,000 supplier invoice that goes by SWIFT, the price holds.</p>
+<p><strong>This conflicts with one assumption in §6 and the conflict is recorded, not smoothed over.</strong> The model uses a $200 average ticket. The comparators show $200 consumer transfers priced at 1-2%, so the $200 ticket only earns 3.00% if it is a business payment. §13 gap 16 carries the correction.</p>
+<h3 id="77-what-working-looks-like-at-day-90">7.7 What "working" looks like at day 90</h3>
 <p>600 transactions/month, $120,000 payout volume, first-attempt success ≥92%, settlement inside the contracted cycle on 95% of batches, zero compliance incidents, two payout providers live, one approved intermediary contracted. That proves the corridor operates. §6 shows why it does not yet prove a business.</p>
 <hr>
 <h2 id="8-operational-and-settlement-architecture">8. Operational and Settlement Architecture</h2>
@@ -2649,6 +2699,20 @@ F1 (PSD2, SEPA)  --&gt;    B1: FX + RFE declaration  --&gt;    Riverpe XOF accou
 <td>Accept and disclose; no instrument exists at this scale</td>
 <td>Standing</td>
 </tr>
+<tr>
+<td>15</td>
+<td><strong>Nigeria and Kenya are not assessed</strong></td>
+<td>Excluded by scope, not by evidence. The two markets where operator knowledge would be strongest are absent, which reads as desk research unless the boundary is stated</td>
+<td>Read the CBN and CBK licensing texts, NGN/KES convertibility and corridor prices, then score both on the same eight criteria</td>
+<td>Q1 2027</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Average ticket $200 conflicts with observed consumer pricing</strong></td>
+<td>At €100 the route is priced at 0.99-1.85% [S21, S22], so a 3.00% take rate only holds on business tickets (§7.6). If the pilot's real average is $200 consumer, §6 is overstated</td>
+<td>Segment the pilot by ticket size; replace $200 with the observed average after 60 days; re-run §6</td>
+<td>Day 60</td>
+</tr>
 </tbody>
 </table>
 <hr>
@@ -2855,6 +2919,33 @@ F1 (PSD2, SEPA)  --&gt;    B1: FX + RFE declaration  --&gt;    Riverpe XOF accou
 <td>—</td>
 <td>Timing assumption in §5.3 and §7.2</td>
 <td><strong>Assumption.</strong> Must be replaced with a quoted cut-off and value-date schedule from the approved intermediary</td>
+</tr>
+<tr>
+<td><strong>S21</strong></td>
+<td>TransfertCompare</td>
+<td>France → Côte d'Ivoire route page, quotes recorded 13-15 Nov 2026</td>
+<td>Nov 2026</td>
+<td><a href="https://transfertcompare.com/en/send-money/france-vers-cote-d-ivoire">transfertcompare.com</a></td>
+<td>Provider-level quotes on €100: Western Union €0.99 (~0.99%), MoneyGram €1.49 (1.50%), WorldRemit €1.85 (1.85%), Remitly €5.99 (5.99%)</td>
+<td><strong>Secondary comparator</strong>, affiliate-linked, one amount point, and the headline cheapest figure moved between snapshots (0.99% and 1.12% on different days). Not a tariff</td>
+</tr>
+<tr>
+<td><strong>S22</strong></td>
+<td>Les Afriques</td>
+<td>Send Money to Côte d'Ivoire: Fee &amp; Rate Comparison 2026</td>
+<td>23 Sep 2026</td>
+<td><a href="https://lesafriques.com/en/2026/09/send-money-to-c-te-d-ivoire-fee-and-rate-comparison-2026/">lesafriques.com</a></td>
+<td>Remitly tier table (€2.99-€18.99); Orange Money Europe €1.99/€2.99; Wave 1%; SWIFT €15-50 plus FX at 3-5 days; payout network and bank list</td>
+<td><strong>Secondary</strong>, carries affiliate links for some providers; fee tables are indicative and not dated to a specific quote</td>
+</tr>
+<tr>
+<td><strong>S23</strong></td>
+<td>AuFinal</td>
+<td>France → Côte d'Ivoire comparison across 8 providers</td>
+<td>Prices estimated 8 Nov 2026</td>
+<td><a href="https://www.aufinal.com/en/send-money-france-to-cote-d-ivoire">aufinal.com</a></td>
+<td>Total cost at €300 spans 0.3-5.4% and at €1,000 spans 0.1-3.8% across eight providers</td>
+<td><strong>Secondary</strong>; estimated against a mid-market rate, and the spread is a range rather than a quotable price</td>
 </tr>
 </tbody>
 </table>
