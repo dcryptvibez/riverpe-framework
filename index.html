@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riverpe — Payment Supply Network Framework</title>
+<meta name="description" content="Riverpe payment supply network framework. Version 4 is the current edition; version 2 is retained for reference.">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e4e4e7;
+    --muted: #9ca3af;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e1b4b 100%);
+    padding: 56px 32px 44px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0 auto;
+    font-size: 1.02rem;
+  }
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.18s, transform 0.18s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .card .badge {
+    align-self: flex-start;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .badge.current { background: rgba(34,197,94,0.14); color: var(--green); border: 1px solid rgba(34,197,94,0.35); }
+  .badge.previous { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.32); }
+  .card h2 {
+    font-size: 1.22rem;
+    font-weight: 650;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .card p {
+    color: var(--muted);
+    font-size: 0.94rem;
+    margin-bottom: 16px;
+  }
+  .card ul {
+    list-style: none;
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .card ul li {
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .card ul li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+  }
+  .card .meta {
+    margin-top: auto;
+    font-size: 0.82rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card .meta strong { color: var(--accent); font-weight: 600; }
+  .note {
+    margin-top: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+  }
+  .note h3 {
+    font-size: 0.95rem;
+    font-weight: 650;
+    margin-bottom: 10px;
+  }
+  .note p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+  .note ul {
+    list-style: none;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .note ul li {
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+  .note ul li::before {
+    content: "•";
+    position: absolute;
+    left: 4px;
+    color: var(--accent2);
+  }
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 56px;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  @media (max-width: 560px) {
+    .hero { padding: 40px 20px 32px; }
+    .hero h1 { font-size: 1.6rem; }
+    main { padding: 32px 18px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Payment Supply Network Framework</h1>
+  <p>How a payment corridor is actually built: regulatory eligibility first, then access, then the float and unit economics that decide whether it survives contact with a real market.</p>
+</div>
+
+<main>
+  <div class="grid">
+
+    <a class="card" href="riverpe-preview-v4.html">
+      <span class="badge current">Current edition</span>
+      <h2>Framework v4</h2>
+      <p>The full 15-section framework: regulation as a go/no-go gate, markets ranked by accessibility, treasury and float, unit economics under three scenarios, and one worked corridor end to end.</p>
+      <ul>
+        <li>Twenty numbered sources with dates, URLs and stated limitations</li>
+        <li>Minimum float and break-even derived line by line</li>
+        <li>Ten-step corridor lifecycle, fees and settlement shown per step</li>
+        <li>Gaps and open questions listed, not hidden</li>
+      </ul>
+      <div class="meta">
+        <span>HTML</span>
+        <strong>Read v4 &rarr;</strong>
+      </div>
+    </a>
+
+    <a class="card" href="riverpe-preview.html">
+      <span class="badge previous">Superseded</span>
+      <h2>Framework v2</h2>
+      <p>The original payment supply network framework. Retained unchanged so earlier references and links still resolve, and so the evolution of the thinking stays auditable.</p>
+      <ul>
+        <li>Supply-side framing of corridor coverage</li>
+        <li>Growth KPI philosophy</li>
+        <li>Preserved exactly as originally published</li>
+      </ul>
+      <div class="meta">
+        <span>HTML</span>
+        <strong>Read v2 &rarr;</strong>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="note">
+    <h3>What changed between v2 and v4</h3>
+    <p>v4 is a correction, not a restatement. Four findings changed the recommendations:</p>
+    <ul>
+      <li><strong>Settlement model.</strong> UEMOA R&egrave;glement n&deg;06/2024/CM/UEMOA and Instruction n&deg;01/07/2025/RFE art. 26 bar payment and e-money institutions from originating payments abroad. An approved intermediary bank is therefore mandatory, not optional.</li>
+      <li><strong>Float.</strong> The minimum operating float rises from $50,000 to about $57,000, because the weekend settlement gap is three days, not two.</li>
+      <li><strong>Unit economics.</strong> The funding-side collection fee was missing. Net margin falls from 1.58% to 1.24%, and break-even rises from $1.14m to $1,451,613 per month.</li>
+      <li><strong>Market order.</strong> Brazil scores higher than C&ocirc;te d'Ivoire on operability and still is not first. Scores measure operability; launch order is decided by access and whether the float can be funded. The DRC is excluded from scoring altogether.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  <p>Markdown sources: <a href="riverpe-framework-v4.md">v4</a> &middot; <a href="riverpe-framework-v2-merged.md">v2</a> &nbsp;|&nbsp; Repository: <a href="https://github.com/dcryptvibez/riverpe-framework">dcryptvibez/riverpe-framework</a></p>
+</footer>
+
+</body>
+</html>
